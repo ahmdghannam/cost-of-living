@@ -14,6 +14,8 @@ fun main() {
 
     val getCityHasCheapestInternetConnectionInteractor = GetCityHasCheapestInternetConnectionInteractor(dataSource)
     println(getCityHasCheapestInternetConnectionInteractor.execute())
+    println("dd")
+
 
 }
 private fun printSeparationLine(){
