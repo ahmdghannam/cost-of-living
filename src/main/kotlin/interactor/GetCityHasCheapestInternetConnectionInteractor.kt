@@ -11,14 +11,20 @@ class GetCityHasCheapestInternetConnectionInteractor(
         if (list.isEmpty()) return null
         return dataSource
             .getAllCitiesData()
-            .filter(::excludeNullSalaries)
-            .sortedBy { it.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl?.div(it.averageMonthlyNetSalaryAfterTax!!) }
-            .first()
+            .filter(::excludeNullSalariesOrNullInternetCosts)
+            .filter (::excludeNegativeSalariesOrNegativeInternetCosts)
+            .minByOrNull {
+                it.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl!!.div(it.averageMonthlyNetSalaryAfterTax!!)
+            }
+
     }
 
-    private fun excludeNullSalaries(city: CityEntity): Boolean {
-        return city.averageMonthlyNetSalaryAfterTax != null
+    private fun excludeNullSalariesOrNullInternetCosts(city: CityEntity): Boolean {
+        return city.averageMonthlyNetSalaryAfterTax != null && city.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl !=null
     }
 
+    private fun excludeNegativeSalariesOrNegativeInternetCosts(city: CityEntity): Boolean {
+        return city.averageMonthlyNetSalaryAfterTax!! >= 0 && city.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl!! >=0
+    }
 
 }

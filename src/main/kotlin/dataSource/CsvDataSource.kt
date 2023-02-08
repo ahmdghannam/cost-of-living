@@ -23,7 +23,7 @@ class CsvDataSource(private val parser: CsvParser,private val file:String = FILE
     }
 
     companion object {
-        private const val FILE_NAME = "costOfLiving.csv"
+        private const val FILE_NAME = "csvFiles/costOfLiving.csv"
 
     }
 
