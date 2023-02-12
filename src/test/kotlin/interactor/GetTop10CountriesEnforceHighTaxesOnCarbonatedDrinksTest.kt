@@ -18,7 +18,7 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksTest {
         assertNull(city)
     }
     @Test
-    fun should_ReturnAllCity_When_ProvidedLessThan10Cities() {
+    fun should_ReturnAllCityWithoutCitiesIsContainsOfNullPricesToCarbonatedDrinks_When_ProvidedLessThan10Cities() {
        // given list has less than 10 cities
         val csvParser = CsvParser()
         val dataSource: CostOfLivingDataSource = CsvDataSource(csvParser,
@@ -29,12 +29,35 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksTest {
         val allCities = cities.excute()
         // then
         assertEquals(items , allCities)
-
-
+    }
+    @Test
+    fun should_ReturnNull_When_AllPricesCarbonatedDrinksIsNegative() {
+        // given list contains negative prices
+        val csvParser = CsvParser()
+        val dataSource : CostOfLivingDataSource = CsvDataSource(csvParser , NEGATIVE_PRICE)
+        cities = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinks(dataSource)
+        // when the list contains negative prices carbonated drinks
+        val city = cities.excute()
+        // then
+        assertNull(city)
+    }
+    @Test
+    fun should_ReturnNull_When_AllPricesCarbonatedDrinksIsNull() {
+        // given list contains negative prices
+        val csvParser = CsvParser()
+        val dataSource : CostOfLivingDataSource = CsvDataSource(csvParser , NULL_PRICE)
+        cities = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinks(dataSource)
+        // when the list contains negative prices carbonated drinks
+        val city = cities.excute()
+        // then
+        assertNull(city)
     }
     companion object{
-        private const val SUB_FILE_NAME = "csvFiles/subListOfCostOfLiving.csv"
+        private const val SUB_FILE_NAME = "csvFiles/subListOfCostOfLivingContainsNullPricesOfCarbonatedDrinks.csv"
         private const val EMPTY_FILE = "csvFiles/emptyFile.csv"
+        private const val NEGATIVE_PRICE = "csvFiles/negativePriceCarbonatedDrinks.csv"
+        private const val NULL_PRICE = "csvFiles/nullPriceCarbonatedDrinks.csv"
+
 
     }
 }
