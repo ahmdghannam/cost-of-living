@@ -7,6 +7,7 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinks (
 ){
     fun excute():List<String>?{
         val list = dataSource.getAllCitiesData()
+
         if (list.isEmpty()) return null
 
         return dataSource.getAllCitiesData()
@@ -16,7 +17,7 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinks (
 
     }
     private fun excludeNullPricesAndLowQualityData(city: CityEntity): Boolean {
-        return city.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants != null
+        return city.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants != null&& city.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants>=0
                 && city.dataQuality
     }
 
