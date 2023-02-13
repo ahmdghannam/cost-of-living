@@ -21,7 +21,6 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     @MockK
     private lateinit var cityEntityPrices: CityEntity
 
-
     @BeforeEach
     fun setup() {
         MockKAnnotations.init(this)
