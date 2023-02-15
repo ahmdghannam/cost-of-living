@@ -10,8 +10,7 @@ class GetCityHasMoreSavingsPerMonthInteractor(
 
     fun execute(): CityEntity? {
         return dataSource.getAllCitiesData()
-            .filter(::excludeNullFoodPricesAndApartmentAndTransportationsPricesWithNotNull)
-            .filter(::excludeNullAverageMonthly)
+            .filter(::excludeNullFoodPricesAndApartmentAndSalaryAndTransportationsPricesWithNotNull)
             .maxByOrNull(::countSavingsPerMonth)
     }
 
@@ -19,8 +18,8 @@ class GetCityHasMoreSavingsPerMonthInteractor(
 }
 
 
-private fun excludeNullFoodPricesAndApartmentAndTransportationsPricesWithNotNull(city: CityEntity): Boolean {
-    return city.foodPrices.loafOfFreshWhiteBread500g != null
+private fun excludeNullFoodPricesAndApartmentAndSalaryAndTransportationsPricesWithNotNull(city: CityEntity): Boolean {
+    return     city.foodPrices.loafOfFreshWhiteBread500g != null
             && city.foodPrices.localCheese1kg != null
             && city.foodPrices.beefRound1kgOrEquivalentBackLegRedMeat != null
             && city.foodPrices.chickenFillets1kg != null
@@ -33,29 +32,26 @@ private fun excludeNullFoodPricesAndApartmentAndTransportationsPricesWithNotNull
             && city.transportationsPrices.taxi1hourWaitingNormalTariff == null
             && city.transportationsPrices.oneWayTicketLocalTransport == null
             && city.transportationsPrices.taxiStartNormalTariff == null
+            && city.averageMonthlyNetSalaryAfterTax != null
 
 
 }
 
-private fun excludeNullAverageMonthly(city: CityEntity): Boolean {
-    return city.averageMonthlyNetSalaryAfterTax != null
-
-}
 
 private fun countSavingsPerMonth(city: CityEntity): Float {
-    val salaryMonth = city.averageMonthlyNetSalaryAfterTax!! * 2
+    val salaryMonth: Float = city.averageMonthlyNetSalaryAfterTax!! * 2
 
-    val foodPricesAndApartment = (15 * ((city.foodPrices.loafOfFreshWhiteBread500g!! * 2)))
-    +(city.foodPrices.localCheese1kg!!) + (4 * city.foodPrices.beefRound1kgOrEquivalentBackLegRedMeat!!)
-    +(city.foodPrices.chickenFillets1kg!! * 10) + (city.foodPrices.riceWhite1kg!! * 2) +
-            minOf(
-                city.realEstatesPrices.apartment3BedroomsInCityCentre!!,
-                city.realEstatesPrices.apartment3BedroomsOutsideOfCentre!!
-            )
+    val foodPricesAndApartment : Float =
+        city.foodPrices.loafOfFreshWhiteBread500g!! * 30 +
+        city.foodPrices.localCheese1kg!! +
+        city.foodPrices.beefRound1kgOrEquivalentBackLegRedMeat!! * 4 +
+        city.foodPrices.chickenFillets1kg!! * 10 +
+        city.foodPrices.riceWhite1kg!! * 2 +
+        city.realEstatesPrices.apartment3BedroomsInCityCentre!!
 
-    val otherNeeds = 250
+    val otherNeeds : Float = 250f
 
-    return (salaryMonth).minus(foodPricesAndApartment).minus(otherNeeds)
+    return salaryMonth - foodPricesAndApartment - otherNeeds
 
 }
 
