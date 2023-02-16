@@ -52,8 +52,8 @@ fun main() {
 
 
     //8
-    val getCityThatHasAverageMealsPricesInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-    println(getCityThatHasAverageMealsPricesInteractor.execute())
+    val getCityThatHasAvqerageMealsPricesInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
+    println(getCityThatHasAvqerageMealsPricesInteractor.execute())
     printSeparationLine()
 
 

@@ -7,24 +7,26 @@ class GetCityHasCheapestInternetConnectionInteractor(
 ) {
 
     fun execute(): CityEntity? {
-        val list = dataSource.getAllCitiesData()
-        if (list.isEmpty()) return null
         return dataSource
             .getAllCitiesData()
-            .filter(::excludeNullSalariesOrNullInternetCosts)
-            .filter (::excludeNegativeSalariesOrNegativeInternetCosts)
+            .filter(::excludeNullAndNegativeSalariesAndInternetCosts)
             .minByOrNull {
                 it.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl!!.div(it.averageMonthlyNetSalaryAfterTax!!)
             }
+    }
+
+    private fun excludeNullAndNegativeSalariesAndInternetCosts(city: CityEntity): Boolean {
+        return excludeNullSalariesOrNullInternetCosts(city) &&
+                excludeNegativeSalariesOrNegativeInternetCosts(city)
 
     }
 
     private fun excludeNullSalariesOrNullInternetCosts(city: CityEntity): Boolean {
-        return city.averageMonthlyNetSalaryAfterTax != null && city.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl !=null
+        return city.averageMonthlyNetSalaryAfterTax != null && city.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl != null
     }
 
     private fun excludeNegativeSalariesOrNegativeInternetCosts(city: CityEntity): Boolean {
-        return city.averageMonthlyNetSalaryAfterTax!! >= 0 && city.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl!! >=0
+        return city.averageMonthlyNetSalaryAfterTax!! >= 0 && city.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl!! >= 0
     }
 
 }
