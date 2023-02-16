@@ -19,29 +19,14 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     private lateinit var dataSource: CostOfLivingDataSource
 
     @MockK
-    private lateinit var transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull: CityEntity
-
-    @MockK
-    private lateinit var foodPricesWithNull: CityEntity
-
-
-    @MockK
-    private lateinit var averageSalaryWithNull: CityEntity
-
-    @MockK
-    private lateinit var transportationsPricesWithNotNull: CityEntity
-
-    @MockK
-    private lateinit var apartmentPricesWithNull: CityEntity
-
-
-    @MockK
-    private lateinit var transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull: CityEntity
-
+    private lateinit var cityEntityPrices: CityEntity
 
     @BeforeEach
     fun setup() {
         MockKAnnotations.init(this)
+        every {
+            cityEntityPrices.cityName
+        }returns "Gaza"
 
     }
 
@@ -50,25 +35,26 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // given city with apartment and cost food not null and transportations is null
 
+
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns FoodPrices(10f,20f,30f,40f,10f,50f)
 
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.realEstatesPrices
-        }returns RealEstatesPrices(10f,20f,30f,40f,10f,50f)
+            cityEntityPrices.realEstatesPrices
+        }returns RealEstatesPrices(null,20f,30f,40f,10f,50f)
 
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.averageMonthlyNetSalaryAfterTax
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
         }returns 200f
 
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.transportationsPrices
+            cityEntityPrices.transportationsPrices
         }returns TransportationsPrices(null,null,null,null,null,null)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf(transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull)
+        } returns listOf(cityEntityPrices)
 
 
 
@@ -78,7 +64,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
 
         // done
-        assertEquals(transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull, getCity)
+        assertEquals(cityEntityPrices, getCity)
 
 
     }
@@ -86,17 +72,14 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     fun should_ReturnNull_When_FoodPriceNull() {
 
         // given city with food price is null
-        every {
-            foodPricesWithNull.foodPrices
-        } returns FoodPrices(10f,20f,null,40f,10f,50f)
 
         every {
-            foodPricesWithNull.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,null,40f,10f,50f)
+            cityEntityPrices.foodPrices
+        } returns FoodPrices(null,20f,null,40f,10f,50f)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf(foodPricesWithNull)
+        } returns listOf(cityEntityPrices)
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
@@ -113,16 +96,16 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // given city with apartment is null
         every {
-            apartmentPricesWithNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
 
         every {
-            apartmentPricesWithNull.realEstatesPrices
+            cityEntityPrices.realEstatesPrices
         } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf( apartmentPricesWithNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
@@ -141,20 +124,20 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // given city with average salary  null
         every {
-            averageSalaryWithNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
 
         every {
-            averageSalaryWithNull.realEstatesPrices
+            cityEntityPrices.realEstatesPrices
         } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
 
         every {
-            averageSalaryWithNull.averageMonthlyNetSalaryAfterTax
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
         } returns null
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf( averageSalaryWithNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
@@ -174,24 +157,24 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // given city transportations not null
         every {
-            transportationsPricesWithNotNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
 
         every {
-            transportationsPricesWithNotNull.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
+            cityEntityPrices.realEstatesPrices
+        } returns RealEstatesPrices(10f,20f,30f,60f,10f,15f)
 
         every {
-            transportationsPricesWithNotNull.averageMonthlyNetSalaryAfterTax
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
         } returns 500f
 
         every {
-            transportationsPricesWithNotNull.transportationsPrices
+            cityEntityPrices.transportationsPrices
         }returns TransportationsPrices(10f,20f,30f,40f,50f,60f)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf( transportationsPricesWithNotNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
@@ -211,24 +194,24 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // given city with transportations not null and food price And apartment is null
         every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.foodPrices
-        }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
+            cityEntityPrices.foodPrices
+        }returns  FoodPrices(null,null,null,15f,25f,40f)
 
         every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.realEstatesPrices
+            cityEntityPrices.realEstatesPrices
         } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
 
         every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.averageMonthlyNetSalaryAfterTax
-        } returns 500f
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
+        } returns null
 
         every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.transportationsPrices
+            cityEntityPrices.transportationsPrices
         }returns TransportationsPrices(10f,20f,30f,40f,50f,60f)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf( transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
@@ -244,7 +227,6 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
 
 }
-
 
 
 
