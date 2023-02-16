@@ -13,7 +13,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
     private lateinit var cheapestApartments: FindTheCheapestTenCitiesApartments
 
     @MockK
-    private lateinit var dataSource: CostOfLivingDataSource
+    private var dataSource: CostOfLivingDataSource
     init {
         MockKAnnotations.init(this)
         dataSource = mockk()
@@ -32,6 +32,9 @@ class FindTheCheapestTenCitiesApartmentsTest {
             every {
                 city.averageMonthlyNetSalaryAfterTax
             } returns 100f
+            every {
+                city.dataQuality
+            } returns true
 
             every {
                 city.cityName
@@ -44,27 +47,24 @@ class FindTheCheapestTenCitiesApartmentsTest {
         } returns list
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
-        val expectedPairs= mutableListOf<Pair<String,Double>>()
+        val expectedMap= HashMap<String,Double>()
 
         for (i in 0 until 10){
             val city=list[i]
             val costOf100mAppartment=city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!.times(100)
             val yearSalary=city.averageMonthlyNetSalaryAfterTax!!*12
             val numberOfYears=costOf100mAppartment/yearSalary.toDouble()
-            val pair=Pair("$i",numberOfYears)
-
-
-            expectedPairs.add(pair)
+            expectedMap["$i"] = numberOfYears
         }
 
         //when find the least cost cities for appartments
         val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
-        assertEquals(expectedPairs,listOfCheapestTenCititesAppartements)
+        assertEquals(expectedMap,listOfCheapestTenCititesAppartements)
     }
     @Test
-    fun should_ReturnNull_WhenListIsEmpty() {
+    fun should_ReturnEmptyMap_WhenListIsEmpty() {
         // given null list
         every {
             dataSource.getAllCitiesData()
@@ -73,19 +73,17 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
+        val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
-        assertNull(listOfCheapestTenCititesAppartements)
+        assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
     @Test
-    fun should_ReturnNull_WhenAllPricesPerSquareMeterToBuyApartmentOutsideOfCentreIsNegative() {
+    fun should_ReturnEmptyMap_WhenAllPricesPerSquareMeterToBuyApartmentOutsideOfCentreIsNegative() {
 
         // given negative price of apartments list
         val list= mutableListOf<CityEntity>()
-
-
 
         for (i in 0 until 10){
             val city= mockk<CityEntity>()
@@ -109,14 +107,14 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
+        val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
-        assertNull(listOfCheapestTenCititesAppartements)
+        assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
     @Test
-    fun should_ReturnNull_WhenAllSalariesIsNegative() {
+    fun should_ReturnEmptyMap_WhenAllSalariesIsNegative() {
 
         // given negative salaries cities list
         val list= mutableListOf<CityEntity>()
@@ -143,14 +141,14 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
+        val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
-        assertNull(listOfCheapestTenCititesAppartements)
+        assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
     @Test
-    fun should_ReturnNull_WhenAllPricesPerSquareMeterToBuyApartmentOutsideOfCentreIsNull() {
+    fun should_ReturnEmptyMap_WhenAllPricesPerSquareMeterToBuyApartmentOutsideOfCentreIsNull() {
 
         // given null price of apartments list
 
@@ -178,14 +176,14 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
+        val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
-        assertNull(listOfCheapestTenCititesAppartements)
+        assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
     @Test
-    fun should_ReturnNull_WhenAllSalariesIsNull() {
+    fun should_ReturnEmptyMap_WhenAllSalariesIsNull() {
 
         // given null salaries list
         val list= mutableListOf<CityEntity>()
@@ -212,10 +210,10 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
+        val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
-        assertNull(listOfCheapestTenCititesAppartements)
+        assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
 
