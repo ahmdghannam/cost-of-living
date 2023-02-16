@@ -6,33 +6,34 @@ class FindTheCheapestTenCitiesApartments(
     private val dataSource: CostOfLivingDataSource
 ) {
 
-    fun execute(): List<Pair<String, Double>>? {
-        val cities = dataSource
+    fun execute(limit:Int): Map<String, Double> {
+        return dataSource
             .getAllCitiesData()
-            .filter(::excludeNullSalariesOrNullAppartmentsCosts)
-            .filter(::excludeNegativeSalariesOrNegativeInternetCosts)
+            .filter(::excludeNullAndNegativeSalariesAndApartmentsCostsAndLowQualityData)
             .sortedBy {
-                it.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!.times(100)
+                it.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!
                     .div(it.averageMonthlyNetSalaryAfterTax!!)
             }
-            .take(10)
-
-        if (cities.isEmpty()) return null
-
-        val citiesNamesWithYearsNeeded = mutableListOf<Pair<String,Double>>()
-
-        for (city in cities){
-            val costOf100mAppartment=city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!.times(100)
-            val yearSalary=city.averageMonthlyNetSalaryAfterTax!!*12
-            val numberOfYears=costOf100mAppartment/yearSalary.toDouble()
-            citiesNamesWithYearsNeeded.add(Pair(city.cityName,numberOfYears))
-        }
-
-        return citiesNamesWithYearsNeeded
+            .take(limit)
+            .associate {city ->
+                val costOf100mApartment=city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!.times(100)
+                val yearSalary=city.averageMonthlyNetSalaryAfterTax!!*12
+                val numberOfYears=costOf100mApartment/yearSalary.toDouble()
+                city.cityName to numberOfYears
+            }
     }
 
 
-    private fun excludeNullSalariesOrNullAppartmentsCosts(city: CityEntity): Boolean {
+
+    private fun excludeNullAndNegativeSalariesAndApartmentsCostsAndLowQualityData(city: CityEntity):Boolean{
+        return excludeNullSalariesOrNullApartmentsCosts(city)&&
+                excludeNegativeSalariesOrNegativeInternetCosts(city)&&
+                excludeLowQualityData(city)
+    }
+    private fun excludeLowQualityData(city: CityEntity):Boolean{
+        return city.dataQuality
+    }
+    private fun excludeNullSalariesOrNullApartmentsCosts(city: CityEntity): Boolean {
         return city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre != null
                 && city.averageMonthlyNetSalaryAfterTax != null
     }

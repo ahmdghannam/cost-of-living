@@ -45,7 +45,7 @@ fun main() {
 
     //6
     val getCheapestTenCitiesApartments = FindTheCheapestTenCitiesApartments(dataSource)
-    println(getCheapestTenCitiesApartments.execute())
+    println(getCheapestTenCitiesApartments.execute(10))
     printSeparationLine()
 
     //7

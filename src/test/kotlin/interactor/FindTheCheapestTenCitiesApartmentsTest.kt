@@ -58,7 +58,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         }
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute()
+        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
         assertEquals(expectedPairs,listOfCheapestTenCititesAppartements)
@@ -73,7 +73,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute()
+        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
         assertNull(listOfCheapestTenCititesAppartements)
@@ -109,7 +109,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute()
+        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
         assertNull(listOfCheapestTenCititesAppartements)
@@ -143,7 +143,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute()
+        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
         assertNull(listOfCheapestTenCititesAppartements)
@@ -178,7 +178,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute()
+        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
         assertNull(listOfCheapestTenCititesAppartements)
@@ -212,7 +212,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         cheapestApartments=FindTheCheapestTenCitiesApartments(dataSource)
 
         //when find the least cost cities for appartments
-        val listOfCheapestTenCititesAppartements=cheapestApartments.execute()
+        val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
         // then returns null
         assertNull(listOfCheapestTenCititesAppartements)
