@@ -3,7 +3,7 @@ package interactor
 import model.CityEntity
 
 
-class GetCityHasTheCheapestBananaPriceInteractor (
+class GetCitiesHasTheCheapestBananaPricesInteractor (
     private val dataSource: CostOfLivingDataSource,
     ){
 

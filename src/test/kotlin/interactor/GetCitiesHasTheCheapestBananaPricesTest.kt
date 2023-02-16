@@ -5,14 +5,13 @@ import io.mockk.impl.annotations.MockK
 import model.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class GetCityHasCheapestBananaPriceTest{
+class GetCitiesHasTheCheapestBananaPricesTest{
 
     @MockK
-    private lateinit var cheapestBanana: GetCityHasTheCheapestBananaPriceInteractor
+    private lateinit var cheapestBanana: GetCitiesHasTheCheapestBananaPricesInteractor
 
     @MockK
     lateinit var dataSource: CostOfLivingDataSource
@@ -55,7 +54,7 @@ class GetCityHasCheapestBananaPriceTest{
         every { dataSource.getAllCitiesData() }returns resultList
 
         // when
-        cheapestBanana = GetCityHasTheCheapestBananaPriceInteractor(dataSource)
+        cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
         val actual = cheapestBanana.execute()
 
         // then
@@ -75,7 +74,7 @@ class GetCityHasCheapestBananaPriceTest{
         every { dataSource.getAllCitiesData() }returns listOf(oneCityWithValidBananaPrice)
 
         // when
-        cheapestBanana = GetCityHasTheCheapestBananaPriceInteractor(dataSource)
+        cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
         val actual = cheapestBanana.execute()
 
         // then
@@ -91,7 +90,7 @@ class GetCityHasCheapestBananaPriceTest{
         }returns emptyList()
 
         // when
-        cheapestBanana = GetCityHasTheCheapestBananaPriceInteractor(dataSource)
+        cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
         val actual = cheapestBanana.execute()
 
         // then
