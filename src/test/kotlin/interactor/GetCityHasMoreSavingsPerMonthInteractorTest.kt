@@ -7,9 +7,9 @@ import io.mockk.impl.annotations.MockK
 import model.CityEntity
 import model.FoodPrices
 import model.RealEstatesPrices
-import model.TransportationsPrices
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.function.Executable
 
 
 internal class GetCityHasMoreSavingsPerMonthInteractorTest {
@@ -76,11 +76,12 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
+
 
 
         // then
-        assertNull(getNull)
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
     }
@@ -107,11 +108,11 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
         // then
-        assertNull(getNull)
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
     }
@@ -139,11 +140,11 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
         // then
-        assertNull(getNull)
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
     }
@@ -173,11 +174,12 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
         //then
-        assertNull(getNull)
+        assertThrows(Exception::class.java,savingCityExecutable)
+
 
     }
 
