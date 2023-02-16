@@ -34,8 +34,6 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     fun should_ReturnCity_When_ApartmentAndCostFoodNotNullAndTransportationsIsNull() {
 
         // given city with apartment and cost food not null and transportations is null
-
-
         every {
             cityEntityPrices.foodPrices
         }returns FoodPrices(10f,20f,30f,40f,10f,50f)
@@ -49,13 +47,8 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         }returns 200f
 
         every {
-            cityEntityPrices.transportationsPrices
-        }returns TransportationsPrices(null,null,null,null,null,null)
-
-        every {
             dataSource.getAllCitiesData()
         } returns listOf(cityEntityPrices)
-
 
 
         // when find the most  city in the world have more savings per month.
@@ -63,7 +56,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val getCity = citySavings.execute()
 
 
-        // done
+        // then
         assertEquals(cityEntityPrices, getCity)
 
 
@@ -72,7 +65,6 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     fun should_ReturnNull_When_FoodPriceNull() {
 
         // given city with food price is null
-
         every {
             cityEntityPrices.foodPrices
         } returns FoodPrices(null,20f,null,40f,10f,50f)
@@ -81,12 +73,13 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
             dataSource.getAllCitiesData()
         } returns listOf(cityEntityPrices)
 
+
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
         val getNull = citySavings.execute()
 
 
-        // done
+        // then
         assertNull(getNull)
 
 
@@ -104,6 +97,10 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
 
         every {
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
+        }returns null
+
+        every {
             dataSource.getAllCitiesData()
         } returns listOf( cityEntityPrices)
 
@@ -113,7 +110,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val getNull = citySavings.execute()
 
 
-        // done
+        // then
         assertNull(getNull)
 
 
@@ -145,7 +142,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val getNull = citySavings.execute()
 
 
-        // done
+        // then
         assertNull(getNull)
 
 
@@ -153,44 +150,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
 
     @Test
-    fun should_ReturnNull_When_TransportationsNotNull() {
-
-        // given city transportations not null
-        every {
-            cityEntityPrices.foodPrices
-        }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
-
-        every {
-            cityEntityPrices.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,30f,60f,10f,15f)
-
-        every {
-            cityEntityPrices.averageMonthlyNetSalaryAfterTax
-        } returns 500f
-
-        every {
-            cityEntityPrices.transportationsPrices
-        }returns TransportationsPrices(10f,20f,30f,40f,50f,60f)
-
-        every {
-            dataSource.getAllCitiesData()
-        } returns listOf( cityEntityPrices)
-
-
-        // when find the most  city in the world have more savings per month.
-        citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
-
-
-        // done
-        assertNull(getNull)
-
-
-    }
-
-
-    @Test
-    fun should_ReturnNull_When_TransportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull() {
+    fun should_ReturnNull_When_FoodPriceAndApartmentAndAverageSalaryNull() {
 
         // given city with transportations not null and food price And apartment is null
         every {
@@ -205,9 +165,6 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
             cityEntityPrices.averageMonthlyNetSalaryAfterTax
         } returns null
 
-        every {
-            cityEntityPrices.transportationsPrices
-        }returns TransportationsPrices(10f,20f,30f,40f,50f,60f)
 
         every {
             dataSource.getAllCitiesData()
@@ -219,7 +176,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val getNull = citySavings.execute()
 
 
-        //done
+        //then
         assertNull(getNull)
 
     }
