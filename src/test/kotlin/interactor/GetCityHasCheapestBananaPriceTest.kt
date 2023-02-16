@@ -1,65 +1,108 @@
 package interactor
 
-import io.mockk.MockKAnnotations
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
+import model.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class GetCityHasCheapestBananaPriceTest{
 
+    @MockK
     private lateinit var cheapestBanana: GetCityHasTheCheapestBananaPriceInteractor
 
     @MockK
-    private lateinit var dataSource: CostOfLivingDataSource
+    lateinit var dataSource: CostOfLivingDataSource
 
-    init {
+    @MockK
+    private lateinit var citiesWithCheapestBananaPrice: CityEntity
+
+    @MockK
+    private lateinit var citiesWithNullBananaPrice: CityEntity
+
+    @MockK
+    private lateinit var citiesWithNegativeBananaPrice: CityEntity
+
+    @MockK
+    private lateinit var oneCityWithValidBananaPrice: CityEntity
+
+
+    @BeforeEach
+    fun setup(){
         MockKAnnotations.init(this)
-        dataSource = mockk()
+
     }
 
     @Test
-    fun should_ReturnSortedListByCheapestBananaPrices_When_TheListIsNotEmptyAndPricesIsNotZeroOrInMinus(){
+    fun should_ReturnSortedListByCheapestBananaPrices_When_TheListIsNotEmptyAndPricesIsNotZeroOrInMinus() {
         // given
 
+         val resultList = mutableListOf<CityEntity>()
+
+        every { citiesWithCheapestBananaPrice.cityName } returns "Gaza"
+        resultList.add(citiesWithCheapestBananaPrice)
+
+        every { citiesWithCheapestBananaPrice.cityName } returns "Cairo"
+        resultList.add(citiesWithCheapestBananaPrice)
+
+        every { citiesWithCheapestBananaPrice.cityName } returns "Baghdad"
+        resultList.add(citiesWithCheapestBananaPrice)
+
+
+        every { dataSource.getAllCitiesData() }returns resultList
+
         // when
+        cheapestBanana = GetCityHasTheCheapestBananaPriceInteractor(dataSource)
+        val actual = cheapestBanana.execute()
 
         // then
+//        assertEquals(resultList, actual)
     }
 
     @Test
-    fun should_ReturnSingleList_When_TheListHasOneCityAndThePriceIsNotNull(){
+    fun should_ReturnOneCityWithValidPrice_When_TheListHasOneCity(){
         // given
+        val resultList = mutableListOf<String>()
+
+        every { oneCityWithValidBananaPrice.cityName } returns "gaza"
+
+        every { oneCityWithValidBananaPrice.fruitAndVegetablesPrices.banana1kg } returns 30f
+
+        resultList.add(oneCityWithValidBananaPrice.cityName)
+        every { dataSource.getAllCitiesData() }returns listOf(oneCityWithValidBananaPrice)
 
         // when
+        cheapestBanana = GetCityHasTheCheapestBananaPriceInteractor(dataSource)
+        val actual = cheapestBanana.execute()
 
         // then
+        assertEquals(resultList, actual)
     }
 
     @Test
-    fun should_ReturnNull_When_TheListIsEmpty(){
+    fun should_ReturnNull_When_TheListIsEmpty() {
+
         // given
+        every {
+            dataSource.getAllCitiesData()
+        }returns emptyList()
 
         // when
+        cheapestBanana = GetCityHasTheCheapestBananaPriceInteractor(dataSource)
+        val actual = cheapestBanana.execute()
 
         // then
+        assertNull(actual)
     }
 
     @Test
-    fun should_ReturnNull_When_ThePricesIsZeroOrInMinus(){
+    fun should_ReturnThrowException_When_ThePriceIsZeroOrInMinus(){
         // given
 
-        // when
 
-        // then
     }
 
-
-
-    companion object {
-        private const val EMPTY_FILE = "csvFiles/emptyFile.csv"
-        private const val ONE_CITY_FILE = "csvFiles/oneCity.csv"
-        private const val SUB_FILE_NAME = "csvFiles/subListOfCostOfLiving.csv"
-        private const val NULL_SALARIES_FILE = "csvFiles/nullSalaries.csv"
-        private const val NEGATIVE_SALARIES_FILE = "csvFiles/negativeSalaries.csv"
-    }
 }

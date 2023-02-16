@@ -1,13 +1,23 @@
 package interactor
 
-import model.*
+import model.CityEntity
+
 
 class GetCityHasTheCheapestBananaPriceInteractor (
     private val dataSource: CostOfLivingDataSource,
     ){
 
-    fun sortCitiesByBananaPrice (vararg city: CityEntity): List<String>{
-        return emptyList()
+    fun execute(vararg cities: CityEntity): List<String>? {
+        return if (cities.isNotEmpty()){
+            cities
+                .filter (:: excludeNullAndNegativeBananaPrices)
+                .sortedBy { it.fruitAndVegetablesPrices.banana1kg }
+                .map { it.cityName }
+        }else
+            null
     }
 
+    private fun excludeNullAndNegativeBananaPrices(city: CityEntity): Boolean {
+        return city.fruitAndVegetablesPrices.banana1kg != null && city.fruitAndVegetablesPrices.banana1kg > 0f
+    }
 }
