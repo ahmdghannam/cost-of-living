@@ -5,16 +5,17 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import model.CityEntity
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.function.Executable
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class GetCityHasCheapestInternetConnectionInteractorTest {
 
     private lateinit var cheapestInternet: GetCityHasCheapestInternetConnectionInteractor
 
     @MockK
-    private lateinit var dataSource: CostOfLivingDataSource
+    private var dataSource: CostOfLivingDataSource
 
     init {
         MockKAnnotations.init(this)
@@ -84,7 +85,7 @@ class GetCityHasCheapestInternetConnectionInteractorTest {
     }
 
     @Test
-    fun should_ReturnNull_When_TheListIsEmpty() {
+    fun should_ThrowException_When_TheListIsEmpty() {
         // given
         every {
             dataSource.getAllCitiesData()
@@ -93,16 +94,14 @@ class GetCityHasCheapestInternetConnectionInteractorTest {
         cheapestInternet = GetCityHasCheapestInternetConnectionInteractor(dataSource)
 
         // when find the minimum internet coast of this list
-        val cheapestCityInInternet = cheapestInternet.execute()
+        val cheapestCityInInternetExecutable  = Executable { cheapestInternet.execute()}
         // then
-        assertNull(cheapestCityInInternet)
+        assertThrows(Exception::class.java,cheapestCityInInternetExecutable)
 
     }
 
     @Test
-    fun should_ReturnNull_When_AllTheSalariesIsNull() {
-
-
+    fun should_ThrowException_When_AllTheSalariesIsNull() {
         // given list of cities with null salaries
         val list= mutableListOf<CityEntity>()
 
@@ -122,13 +121,13 @@ class GetCityHasCheapestInternetConnectionInteractorTest {
             dataSource.getAllCitiesData()
         } returns list
 
-        cheapestInternet = GetCityHasCheapestInternetConnectionInteractor(dataSource)
+        cheapestInternet =  GetCityHasCheapestInternetConnectionInteractor(dataSource)
 
 
         // when find the minimum internet coast of this list
-        val cheapestCityInInternet = cheapestInternet.execute()
+        val cheapestCityInInternetExcecutable = Executable { cheapestInternet.execute() }
         // then
-        assertNull(cheapestCityInInternet)
+        assertThrows(Exception::class.java,cheapestCityInInternetExcecutable)
 
     }
 
@@ -158,9 +157,9 @@ class GetCityHasCheapestInternetConnectionInteractorTest {
 
 
         // when find the minimum internet coast of this list
-        val cheapestCityInInternet = cheapestInternet.execute()
+        val cheapestCityInInternetExecutable = Executable {cheapestInternet.execute()}
         // then it returns null
-        assertNull(cheapestCityInInternet)
+        assertThrows(Exception::class.java,cheapestCityInInternetExecutable)
 
     }
 
@@ -188,9 +187,9 @@ class GetCityHasCheapestInternetConnectionInteractorTest {
 
 
         // when find the minimum internet coast of this list
-        val cheapestCityInInternet = cheapestInternet.execute()
+        val cheapestCityInInternetExecutable = Executable {  cheapestInternet.execute()}
         // then
-        assertNull(cheapestCityInInternet)
+        assertThrows(Exception::class.java,cheapestCityInInternetExecutable)
 
     }
 
@@ -219,20 +218,10 @@ class GetCityHasCheapestInternetConnectionInteractorTest {
 
 
         // when find the minimum internet coast of this list
-        val cheapestCityInInternet = cheapestInternet.execute()
+        val cheapestCityInInternetExecutable = Executable {   cheapestInternet.execute()}
         // then
-        assertNull(cheapestCityInInternet)
+        assertThrows(Exception::class.java,cheapestCityInInternetExecutable)
 
     }
 
-
-    companion object {
-        private const val SUB_FILE_NAME = "csvFiles/subListOfCostOfLiving.csv"
-        private const val EMPTY_FILE = "csvFiles/emptyFile.csv"
-        private const val NULL_SALARIES_FILE = "csvFiles/nullSalaries.csv"
-        private const val NULL_INTERNET_COST_FILE = "csvFiles/nullSalaries.csv"
-        private const val NEGATIVE_SALARIES_FILE = "csvFiles/negativeSalaries.csv"
-        private const val NEGATIVE_INTERNET_COST_FILE = "csvFiles/negativeInternetCosts.csv"
-        private const val ONE_CITY_FILE = "csvFiles/oneCity.csv"
-    }
 }

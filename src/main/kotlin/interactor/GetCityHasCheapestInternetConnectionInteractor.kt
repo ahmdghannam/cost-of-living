@@ -6,13 +6,13 @@ class GetCityHasCheapestInternetConnectionInteractor(
     private val dataSource: CostOfLivingDataSource,
 ) {
 
-    fun execute(): CityEntity? {
+    fun execute(): CityEntity {
         return dataSource
             .getAllCitiesData()
             .filter(::excludeNullAndNegativeSalariesAndInternetCosts)
             .minByOrNull {
                 it.servicesPrices.internet60MbpsOrMoreUnlimitedDataCableAdsl!!.div(it.averageMonthlyNetSalaryAfterTax!!)
-            }
+            } ?: throw Exception("The list of cities is empty or doesn't match rules")
     }
 
     private fun excludeNullAndNegativeSalariesAndInternetCosts(city: CityEntity): Boolean {

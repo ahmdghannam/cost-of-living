@@ -25,8 +25,8 @@ fun main() {
     printSeparationLine()
 
     //2
-    val GetAvgFruitNVeggieInteractor = GetAvgFruitNVeggieInteractor(dataSource)
-    println(GetAvgFruitNVeggieInteractor.execute())
+    val getAvgFruitNVeggieInteractor = GetAvgFruitNVeggieInteractor(dataSource)
+    println(getAvgFruitNVeggieInteractor.execute())
     printSeparationLine()
 
     //3
