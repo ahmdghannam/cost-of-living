@@ -143,7 +143,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        //  then it throws an exception
+        // then it throws an exception
         assertThrows(Exception::class.java,savingCityExecutable)
 
 
