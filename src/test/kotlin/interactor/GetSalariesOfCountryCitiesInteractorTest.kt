@@ -51,7 +51,7 @@ class GetSalariesOfCountryCitiesInteractorTest {
         val salariesOfCountryInteractor = GetSalariesOfCountryCitiesInteractor(dataSource)
         val result = Executable { salariesOfCountryInteractor.execute(countryName) }
         //then
-        assertThrows(Exception::class.java, result)
+        assertThrows(IllegalArgumentException::class.java, result)
     }
 
     @Test
