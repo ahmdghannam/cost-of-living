@@ -33,7 +33,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     @Test
     fun should_ReturnCity_When_ApartmentAndCostFoodNotNullAndTransportationsIsNull() {
 
-        // given city with apartment and cost food not null
+        // given city with apartment and cost food not null and transportations is null
         every {
             cityEntityPrices.foodPrices
         }returns FoodPrices(10f,20f,30f,40f,10f,50f)
@@ -62,7 +62,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
     }
     @Test
-    fun should_ThrowException_When_FoodPriceNull() {
+    fun should_ReturnNull_When_FoodPriceNull() {
 
         // given city with food price is null
         every {
@@ -86,7 +86,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
     }
     @Test
-    fun should_ThrowException_When_ApartmentNull() {
+    fun should_ReturnNull_When_ApartmentNull() {
 
         // given city with apartment is null
         every {
@@ -118,7 +118,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     }
 
     @Test
-    fun should_ThrowException_When_AverageSalaryNull() {
+    fun should_ReturnNull_When_AverageSalaryNull() {
 
         // given city with average salary  null
         every {
@@ -151,9 +151,9 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
 
     @Test
-    fun should_ThrowException_When_FoodPriceAndApartmentAndAverageSalaryNull() {
+    fun should_ReturnNull_When_FoodPriceAndApartmentAndAverageSalaryNull() {
 
-        // given city and food price And apartment is null
+        // given city with transportations not null and food price And apartment is null
         every {
             cityEntityPrices.foodPrices
         }returns  FoodPrices(null,null,null,15f,25f,40f)
