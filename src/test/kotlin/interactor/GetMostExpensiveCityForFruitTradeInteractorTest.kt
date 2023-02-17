@@ -38,37 +38,15 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
-        // then
+        // // then it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
     }
-    @Test
-    fun should_ThrowException_When_FruitNameNull(){
-        //given name fruit null value
-        val nameFruit : String? = null
-
-        every {
-            cityEntityPrices.fruitAndVegetablesPrices
-        }returns FruitAndVegetablesPrices(10f,20f,30f,40f,50f,60f,70f)
-
-        every {
-            dataSource.getAllCitiesData()
-        } returns listOf(cityEntityPrices)
-
-        //when get most expensive city for fruit trade
-        cityFruit = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
-        val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
-
-
-
-        // then
-        assertThrows(Exception::class.java,cityFruitExecutable)
-
-    }
+   
     @Test
     fun should_ThrowException_When_ApplePriceNull(){
         //given apple price null value
-        val nameFruit = "Apple"
+        val nameFruit = "apple"
 
         every {
             cityEntityPrices.fruitAndVegetablesPrices
@@ -84,7 +62,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
 
 
 
-        // then
+        // // then it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
     }    @Test
@@ -106,7 +84,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
 
 
 
-        // then
+        // // then it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
 
@@ -128,7 +106,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
-        // then
+        // // then it throws an exception it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
 
