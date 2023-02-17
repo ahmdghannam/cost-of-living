@@ -47,20 +47,20 @@ private fun countSavingsPerMonth(city: CityEntity): Float {
     val riceWhiteConsumptionByKG = 2
     val doubleSalary = 2
 
-    val salary = (city.averageMonthlyNetSalaryAfterTax ?: 0f) * doubleSalary
+    val salary = city.averageMonthlyNetSalaryAfterTax!! * doubleSalary
 
     val foodPerMonth = with(city.foodPrices) {
-                (loafOfFreshWhiteBread500g ?: 0f) * whiteBreadConsumptionByKG +
-                (localCheese1kg ?: 0f) +
-                (beefRound1kgOrEquivalentBackLegRedMeat ?: 0f) * beefMeatConsumptionByKG +
-                (chickenFillets1kg ?: 0f) * chickenFilletsConsumptionByKG +
-                (riceWhite1kg ?: 0f) * riceWhiteConsumptionByKG
+                loafOfFreshWhiteBread500g!!  * whiteBreadConsumptionByKG +
+                localCheese1kg!! +
+                beefRound1kgOrEquivalentBackLegRedMeat!!* beefMeatConsumptionByKG +
+                chickenFillets1kg!!  * chickenFilletsConsumptionByKG +
+                riceWhite1kg!! * riceWhiteConsumptionByKG
     }
 
-    val apartmentPrice = city.realEstatesPrices.apartment3BedroomsInCityCentre ?: 0f
+    val apartmentPrice = city.realEstatesPrices.apartment3BedroomsInCityCentre!!
     val otherNeedsPerMonth = 250f
 
-    return (salary - foodPerMonth - apartmentPrice - otherNeedsPerMonth).takeIf { it > 0f } ?: 0f
+    return salary - foodPerMonth - apartmentPrice - otherNeedsPerMonth
 }
 
 
