@@ -80,7 +80,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
 
 
-        // then
+        // then it throws an exception
         assertThrows(Exception::class.java,savingCityExecutable)
 
 
@@ -111,7 +111,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        // then
+        //  then it throws an exception
         assertThrows(Exception::class.java,savingCityExecutable)
 
 
@@ -143,7 +143,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        // then
+        //  then it throws an exception
         assertThrows(Exception::class.java,savingCityExecutable)
 
 
@@ -177,8 +177,9 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        //then
+        // then it throws an exception
         assertThrows(Exception::class.java,savingCityExecutable)
+
 
 
     }

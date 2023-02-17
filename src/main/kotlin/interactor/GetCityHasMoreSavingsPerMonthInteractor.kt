@@ -13,7 +13,7 @@ class GetCityHasMoreSavingsPerMonthInteractor(
         return dataSource
             .getAllCitiesData()
             .filter(::excludeNullFoodPricesAndApartmentAndSalary)
-            .maxByOrNull(::countSavingsPerMonth)?: throw  Exception("There is no city with the highest savings")
+            .maxByOrNull(::countSavingsPerMonth)?: throw  Exception("no city with the highest savings")
     }
 }
 
@@ -50,10 +50,10 @@ private fun countSavingsPerMonth(city: CityEntity): Float {
     val salary = city.averageMonthlyNetSalaryAfterTax!! * doubleSalary
 
     val foodPerMonth = with(city.foodPrices) {
-                loafOfFreshWhiteBread500g!!  * whiteBreadConsumptionByKG +
+                loafOfFreshWhiteBread500g!! * whiteBreadConsumptionByKG +
                 localCheese1kg!! +
-                beefRound1kgOrEquivalentBackLegRedMeat!!* beefMeatConsumptionByKG +
-                chickenFillets1kg!!  * chickenFilletsConsumptionByKG +
+                beefRound1kgOrEquivalentBackLegRedMeat!! * beefMeatConsumptionByKG +
+                chickenFillets1kg!! * chickenFilletsConsumptionByKG +
                 riceWhite1kg!! * riceWhiteConsumptionByKG
     }
 
