@@ -25,10 +25,9 @@ class GetMostExpensiveCityForFruitTradeInteractor(
 
     private fun excludeNullFoodPrices(city: CityEntity): Boolean {
         return city.fruitAndVegetablesPrices.let {
-            it.apples1kg != null &&
+                    it.apples1kg != null &&
                     it.banana1kg != null &&
                     it.oranges1kg != null
-
         }
 
     }

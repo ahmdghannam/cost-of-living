@@ -41,9 +41,6 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         // then
         assertThrows(Exception::class.java,cityFruitExecutable)
 
-
-
-
     }
     @Test
     fun should_ThrowException_When_FruitNameNull(){
@@ -66,9 +63,6 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
 
         // then
         assertThrows(Exception::class.java,cityFruitExecutable)
-
-
-
 
     }
     @Test
@@ -93,9 +87,6 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         // then
         assertThrows(Exception::class.java,cityFruitExecutable)
 
-
-
-
     }    @Test
     fun should_ThrowException_When_BananaPriceNull(){
         //given banana price null value
@@ -119,8 +110,6 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         assertThrows(Exception::class.java,cityFruitExecutable)
 
 
-
-
     }    @Test
     fun should_ThrowException_When_OrangesPriceNull(){
         //given orange price null value
@@ -139,11 +128,8 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
-
         // then
         assertThrows(Exception::class.java,cityFruitExecutable)
-
-
 
 
     }
