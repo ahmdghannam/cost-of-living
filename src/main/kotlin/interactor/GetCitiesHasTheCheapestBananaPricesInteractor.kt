@@ -8,7 +8,8 @@ class GetCitiesHasTheCheapestBananaPricesInteractor ( private val dataSource: Co
 
     fun execute(vararg cities: CityEntity): List<String> {
 
-        return cities
+        return dataSource
+                .getAllCitiesData()
                 .filter (:: excludeNullAndNegativeBananaPrices)
                 .sortedBy { it.fruitAndVegetablesPrices.banana1kg }
                 .map { it.cityName }

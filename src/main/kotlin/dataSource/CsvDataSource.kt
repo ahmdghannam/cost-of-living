@@ -24,6 +24,10 @@ class CsvDataSource(private val parser: CsvParser,private val file :String= FILE
 
     companion object {
         private const val FILE_NAME = "csvFiles/costOfLiving.csv"
+        private const val SUB_FILE_NAME = "csvFiles/subListOfCostOfLiving.csv"
+        private const val NULL_PRICES_FILE_NAME = "csvFiles/nullSalaries.csv"
+        private const val ONE_CITY_FILE_NAME = "csvFiles/oneCity.csv"
+        private const val EMPTY_FILE_NAME = "csvFiles/emptyFile.csv"
     }
 
 }
