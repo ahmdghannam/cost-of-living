@@ -14,8 +14,10 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(
 
 
     private fun excludeNullCarsPrices(city: CityEntity):Boolean{
-        return  city.carsPrices.volkswagenGolf_1_4_90kwTrendLineOrEquivalentNewCar!=null
-                && city.carsPrices.toyotaCorollaSedan_1_6l_97kwComfortOrEquivalentNewCar !=null
+        return  city.carsPrices.let {
+            it.volkswagenGolf_1_4_90kwTrendLineOrEquivalentNewCar !=null
+            && it.toyotaCorollaSedan_1_6l_97kwComfortOrEquivalentNewCar !=null
+        }
 
     }
 

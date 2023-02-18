@@ -57,7 +57,7 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPriceTest {
         citySavings = GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(dataSource)
         val getCity = citySavings.execute(1)
 
-        // done
+        //then it true
         assertEquals(cityEntityPrices, getCity[0])
     }
 
@@ -91,7 +91,7 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPriceTest {
         citySavings = GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(dataSource)
         val getEmptylist = citySavings.execute(1)
 
-        // done
+        //then it return Emptylist
         assertTrue{ getEmptylist.isEmpty()  }
     }
 
@@ -123,7 +123,7 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPriceTest {
         citySavings = GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(dataSource)
         val getCity = citySavings.execute(1)
 
-        // done
+       //then it equal values
         assertEquals(cityEntityPrices, getCity[0])
     }
 
@@ -154,7 +154,7 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPriceTest {
         citySavings = GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(dataSource)
         val getEmptylist = citySavings.execute(1)
 
-        // done
+        //then it return Emptylist
         assertTrue{ getEmptylist.isEmpty()  }
 
 

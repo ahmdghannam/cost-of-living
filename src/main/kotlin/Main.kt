@@ -66,6 +66,7 @@ fun main() {
     val getCityHasMoreSavingsPerMonthInteractor = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
     println(getCityHasMoreSavingsPerMonthInteractor.execute())
     printSeparationLine()
+
     val GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice = GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(dataSource)
     println(GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice.execute(1))
 }
