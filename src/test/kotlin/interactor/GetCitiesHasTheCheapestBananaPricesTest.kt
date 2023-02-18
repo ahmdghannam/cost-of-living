@@ -1,18 +1,17 @@
 package interactor
 
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import model.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.function.Executable
 
 class GetCitiesHasTheCheapestBananaPricesTest{
 
-    @MockK
     private lateinit var cheapestBanana: GetCitiesHasTheCheapestBananaPricesInteractor
+
     @MockK
     lateinit var dataSource: CostOfLivingDataSource
     @MockK
@@ -24,7 +23,7 @@ class GetCitiesHasTheCheapestBananaPricesTest{
     @MockK
     private lateinit var theAveragePriceCityGaza : CityEntity
     @MockK
-    private lateinit var theMostCheapestCityBaghdad: CityEntity
+    private lateinit var theCheapestCityBaghdad: CityEntity
     @MockK
     private lateinit var theMostExpensiveCityCairo: CityEntity
 
@@ -48,17 +47,17 @@ class GetCitiesHasTheCheapestBananaPricesTest{
         every { theMostExpensiveCityCairo.fruitAndVegetablesPrices.banana1kg } returns 25f
         resultList.add(theMostExpensiveCityCairo)
 
-        every { theMostCheapestCityBaghdad.cityName } returns "Baghdad"
-        every { theMostCheapestCityBaghdad.fruitAndVegetablesPrices.banana1kg } returns 15f
-        resultList.add(theMostCheapestCityBaghdad)
+        every { theCheapestCityBaghdad.cityName } returns "Baghdad"
+        every { theCheapestCityBaghdad.fruitAndVegetablesPrices.banana1kg } returns 15f
+        resultList.add(theCheapestCityBaghdad)
 
         every { dataSource.getAllCitiesData() }returns resultList
 
         // when the cities have a valid prices its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute(theAveragePriceCityGaza,
-                                            theMostExpensiveCityCairo,
-                                            theMostCheapestCityBaghdad,)
+        val actual = cheapestBanana.execute( listOf(theAveragePriceCityGaza.cityName,
+                                                    theMostExpensiveCityCairo.cityName,
+                                                    theCheapestCityBaghdad.cityName,))
 
         // then it returns sorted list of cities names by cheapest banana prices
         assertEquals(listOfCities, actual)
@@ -80,14 +79,14 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the city has a valid price its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute(oneCityWithValidBananaPrice)
+        val actual = cheapestBanana.execute(listOf(oneCityWithValidBananaPrice.cityName))
 
         // then it returns the name of this city
         assertEquals(resultList, actual)
     }
 
     @Test
-    fun should_ThrowException_When_TheListIsEmpty() {
+    fun should_ReturnEmptyList_When_TheListIsEmpty() {
 
         // given an empty list
         every {
@@ -96,14 +95,14 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the list haven't any city
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = Executable{cheapestBanana.execute()}
+        val actual = cheapestBanana.execute()
 
-        // then it Throws Exception
-        assertThrows(Exception :: class.java ,actual)
+        // then it returns an empty list
+        assertEquals(listOf<String>(),actual)
     }
 
     @Test
-    fun should_ThrowException_When_ThePriceIsZeroOrInMinus(){
+    fun should_ReturnEmptyList_When_ThePriceIsZeroOrInMinus(){
 
         // given a list with Invalid prices
         every { cityWithZeroPrice.fruitAndVegetablesPrices.banana1kg } returns 0f
@@ -115,9 +114,9 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the cities have an Invalid prices It will be excluded from the list
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = Executable{cheapestBanana.execute()}
+        val actual = cheapestBanana.execute()
 
-        // then it Throws Exception
-        assertThrows(Exception :: class.java ,actual)
+        // then it returns an empty list
+        assertEquals(listOf<String>() ,actual)
     }
 }
