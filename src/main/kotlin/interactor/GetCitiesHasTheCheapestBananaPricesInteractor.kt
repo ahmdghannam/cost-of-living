@@ -6,17 +6,17 @@ import model.CityEntity
 class GetCitiesHasTheCheapestBananaPricesInteractor ( private val dataSource: CostOfLivingDataSource ){
 
 
-    fun execute(vararg cities: CityEntity): List<String> {
+    fun execute(vararg cities: List<String>): List<String> {
 
         return dataSource
                 .getAllCitiesData()
-                .filter (:: excludeNullAndNegativeBananaPrices)
+                .filter {excludeNullAndNegativeBananaPrices(it) && it.cityName in cities.toList().toString()}
                 .sortedBy { it.fruitAndVegetablesPrices.banana1kg }
                 .map { it.cityName }
-                .ifEmpty { throw Exception ("The List is empty.") }
     }
 
     private fun excludeNullAndNegativeBananaPrices(city: CityEntity): Boolean {
-        return city.fruitAndVegetablesPrices.banana1kg != null && city.fruitAndVegetablesPrices.banana1kg > 0f
+        return city.fruitAndVegetablesPrices.banana1kg != null
+                && city.fruitAndVegetablesPrices.banana1kg > 0f
     }
 }
