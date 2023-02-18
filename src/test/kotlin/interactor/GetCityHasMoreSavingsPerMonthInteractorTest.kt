@@ -99,7 +99,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         every {
             cityEntityPrices.averageMonthlyNetSalaryAfterTax
-        }returns null
+        }returns 20f
 
         every {
             dataSource.getAllCitiesData()
@@ -127,7 +127,7 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
 
         every {
             cityEntityPrices.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
+        } returns RealEstatesPrices(10f,20f,10f,20f,10f,15f)
 
         every {
             cityEntityPrices.averageMonthlyNetSalaryAfterTax
