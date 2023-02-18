@@ -1,6 +1,7 @@
 import interactor.CostOfLivingDataSource
 import model.CityEntity
 import java.lang.Math.abs
+
 //A class to get the city with the highest difference between the cost of living in the city center and outside
 class GetHighestDifferanceBetweenCityCenterAndOutside(
     private val dataSource: CostOfLivingDataSource

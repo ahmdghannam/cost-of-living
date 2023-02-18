@@ -5,7 +5,7 @@ import org.junit.jupiter.api.TestInstance
 import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class GetCityThatHasAverageMealsPricesInteractorTest {
+internal class GetHighestDifferanceBetween_CityCenterAndOutsideTest {
 
     private lateinit var highestDifferentRent: GetHighestDifferanceBetweenCityCenterAndOutside
     private lateinit var fakedata: FakeData

@@ -6,8 +6,8 @@ class FakeData : CostOfLivingDataSource {
     override fun getAllCitiesData(): List<CityEntity> {
         return listOf(
             CityEntity(
-                cityName = "Santiago de Cuba",
-                country = "Cuba",
+                cityName = "Khan Younes",
+                country = "Palestine",
                 mealsPrices = MealsPrices(
                     mealInexpensiveRestaurant = 6.5f,
                     mealFor2PeopleMidRangeRestaurant = 15.0f,
