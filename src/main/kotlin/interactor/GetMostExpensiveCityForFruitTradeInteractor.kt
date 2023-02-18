@@ -2,6 +2,7 @@ package interactor
 
 import model.CityEntity
 
+
 class GetMostExpensiveCityForFruitTradeInteractor(
     private val dataSource: CostOfLivingDataSource,
 ) {
@@ -10,7 +11,7 @@ class GetMostExpensiveCityForFruitTradeInteractor(
                      .getAllCitiesData()
                      .filter(::excludeNullFruitPrices)
 
-        return getMinMaxCities(nameFruit,listOfCities)
+        return getCheapestAndExpensiveCities(nameFruit,listOfCities)
     }
     private fun excludeNullFruitPrices(city: CityEntity): Boolean {
         return city.fruitAndVegetablesPrices.let {
@@ -20,19 +21,23 @@ class GetMostExpensiveCityForFruitTradeInteractor(
         }
 
     }
-    private fun getMinMaxCities(nameFruit: String, cities: List<CityEntity>) : String {
-        return when (nameFruit.lowercase().trim()) {
-                   "apple" -> "Apple from ${cities.minByOrNull { it.fruitAndVegetablesPrices.apples1kg!! }!!.cityName} " +
-                      "to ${cities.maxByOrNull { it.fruitAndVegetablesPrices.apples1kg!! }!!.cityName}"
-
-                   "banana" -> "Banana from ${cities.minByOrNull { it.fruitAndVegetablesPrices.banana1kg!! }!!.cityName} " +
-                      "to ${cities.maxByOrNull { it.fruitAndVegetablesPrices.banana1kg!! }!!.cityName}"
-
-                   "orange" -> "Orange from ${cities.minByOrNull { it.fruitAndVegetablesPrices.oranges1kg!! }!!.cityName} " +
-                      "to ${cities.maxByOrNull { it.fruitAndVegetablesPrices.oranges1kg!! }!!.cityName}"
-
-            else -> "Please write the name of the fruit correctly, such as an apple, banana, or orange"
+    private fun getCheapestAndExpensiveCities(nameFruit: String, cities: List<CityEntity>) : String {
+        val (cheapestCity, expensiveCity) = when (nameFruit.lowercase().trim()) {
+            "apple" -> cities.getCheapestAndExpensiveFruitCost { it.fruitAndVegetablesPrices.apples1kg!! }
+            "banana" -> cities.getCheapestAndExpensiveFruitCost { it.fruitAndVegetablesPrices.banana1kg!! }
+            "orange" -> cities.getCheapestAndExpensiveFruitCost { it.fruitAndVegetablesPrices.oranges1kg!! }
+            else ->  return "Please write the name of the fruit correctly, such as an apple, banana, or orange"
         }
+
+        return "Trade ${nameFruit.replaceFirstChar { it.uppercase()}} from ${cheapestCity?.cityName} city to ${expensiveCity?.cityName} city"
+    }
+
+    private fun <T> List<T>.getCheapestAndExpensiveFruitCost(function: (T) -> Float): Pair<T?, T?> {
+        val cheapestCity = this.minByOrNull(function)
+
+        val expensiveCity = this.maxByOrNull(function)
+
+        return Pair(cheapestCity, expensiveCity)
     }
 }
 
