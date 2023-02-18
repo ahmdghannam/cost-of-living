@@ -34,9 +34,9 @@ fun main() {
     println(getSalariesOfCountryCitiesInteractor.execute("Iraq"))
     printSeparationLine()
 
-    // 4
+    // 4  getHighestDifferanceBetweenCityCenterAndOutside
     val getHighestDifferanceBetweenCityCenterAndOutside=GetHighestDifferanceBetweenCityCenterAndOutside(dataSource)
-    println(getHighestDifferanceBetweenCityCenterAndOutside.execute())
+    println(getHighestDifferanceBetweenCityCenterAndOutside.execute(TheTypeOfApartments.ONE_BED_ROOM))
     printSeparationLine()
 
     //5
