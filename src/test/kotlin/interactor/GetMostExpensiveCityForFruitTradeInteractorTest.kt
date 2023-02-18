@@ -38,7 +38,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
-        // // then it throws an exception
+        //then it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
     }
@@ -62,7 +62,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
 
 
 
-        // // then it throws an exception
+        //then it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
     }    @Test
@@ -84,7 +84,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
 
 
 
-        // // then it throws an exception
+        //then it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
 
@@ -106,7 +106,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
-        // // then it throws an exception it throws an exception
+        // then it throws an exception it throws an exception
         assertThrows(Exception::class.java,cityFruitExecutable)
 
 
