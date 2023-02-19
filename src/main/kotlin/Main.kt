@@ -58,8 +58,8 @@ fun main() {
 
 
     //9
-    val getTop10CountriesEnforceHighTaxesOnCarbonatedDrinks = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinks(dataSource)
-    println(getTop10CountriesEnforceHighTaxesOnCarbonatedDrinks.execute())
+    val getTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor(dataSource)
+    println(getTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor.execute(10))
     printSeparationLine()
 
     //10
