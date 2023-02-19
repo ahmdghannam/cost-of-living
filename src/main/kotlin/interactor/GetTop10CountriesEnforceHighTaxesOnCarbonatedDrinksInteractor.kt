@@ -8,7 +8,6 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor (
 
     fun execute(limit:Int):List<Pair<String , Float?>>?{
         val list = dataSource.getAllCitiesData()
-
         if (list.isEmpty()) return null
 
         return dataSource.getAllCitiesData()

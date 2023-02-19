@@ -48,10 +48,10 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractorTest {
             dataSource.getAllCitiesData()
         }returns listOf(city1 , city2)
 
-        // given list has less than 10 countries
+        // given list has more than 10 countries
         countries = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor(dataSource)
         val items = listOf<String>()
-        // when return all countries
+        // when return top 10 countries
         val allCountries = countries.execute(10)
 
 
