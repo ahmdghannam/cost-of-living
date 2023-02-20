@@ -36,53 +36,52 @@ class GetCitiesHasTheCheapestBananaPricesTest{
     fun should_ReturnSortedListByCheapestBananaPrices_When_TheListIsNotEmptyAndPricesIsNotZeroOrInMinus() {
 
         // given list of cities with valid prices
-        val resultList = mutableListOf<CityEntity>()
-        val listOfCities = listOf("Baghdad", "Gaza", "Cairo")
+        val citiesList = mutableListOf<CityEntity>()
 
         every { theAveragePriceCityGaza.cityName } returns "Gaza"
-        every { theAveragePriceCityGaza.fruitAndVegetablesPrices.banana1kg } returns 17f
-        resultList.add(theAveragePriceCityGaza)
+        every { theAveragePriceCityGaza.fruitAndVegetablesPrices.banana1kg } returns 20f
+        citiesList.add(theAveragePriceCityGaza)
 
         every { theMostExpensiveCityCairo.cityName } returns "Cairo"
         every { theMostExpensiveCityCairo.fruitAndVegetablesPrices.banana1kg } returns 25f
-        resultList.add(theMostExpensiveCityCairo)
+        citiesList.add(theMostExpensiveCityCairo)
 
         every { theCheapestCityBaghdad.cityName } returns "Baghdad"
         every { theCheapestCityBaghdad.fruitAndVegetablesPrices.banana1kg } returns 15f
-        resultList.add(theCheapestCityBaghdad)
+        citiesList.add(theCheapestCityBaghdad)
 
-        every { dataSource.getAllCitiesData() }returns resultList
+        every { dataSource.getAllCitiesData() }returns citiesList
 
         // when the cities have a valid prices its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute( listOf(theAveragePriceCityGaza.cityName,
-                                                    theMostExpensiveCityCairo.cityName,
-                                                    theCheapestCityBaghdad.cityName,))
+        val actual = cheapestBanana.execute( listOf(", ${theAveragePriceCityGaza.cityName}, " +
+                                                    "${theMostExpensiveCityCairo.cityName}, " +
+                                                    "${theCheapestCityBaghdad.cityName}, "))
 
         // then it returns sorted list of cities names by cheapest banana prices
-        assertEquals(listOfCities, actual)
+        assertEquals(listOf("Baghdad", "Gaza", "Cairo"), actual)
     }
 
     @Test
     fun should_ReturnOneCityWithValidPrice_When_TheListHasOneCity(){
 
         // given one city with valid price
-        val resultList = mutableListOf<String>()
+        val citiesList = mutableListOf<CityEntity>()
 
         every { oneCityWithValidBananaPrice.cityName } returns "gaza"
 
         every { oneCityWithValidBananaPrice.fruitAndVegetablesPrices.banana1kg } returns 30f
 
-        resultList.add(oneCityWithValidBananaPrice.cityName)
+        citiesList.add(oneCityWithValidBananaPrice)
 
-        every { dataSource.getAllCitiesData() }returns listOf(oneCityWithValidBananaPrice)
+        every { dataSource.getAllCitiesData() }returns citiesList
 
         // when the city has a valid price its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute(listOf(oneCityWithValidBananaPrice.cityName))
+        val actual = cheapestBanana.execute( listOf(", ${oneCityWithValidBananaPrice.cityName}, "))
 
         // then it returns the name of this city
-        assertEquals(resultList, actual)
+        assertEquals(listOf("gaza"), actual)
     }
 
     @Test
@@ -95,7 +94,7 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the list haven't any city
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute()
+        val actual = cheapestBanana.execute(listOf())
 
         // then it returns an empty list
         assertEquals(listOf<String>(),actual)
@@ -105,7 +104,10 @@ class GetCitiesHasTheCheapestBananaPricesTest{
     fun should_ReturnEmptyList_When_ThePriceIsZeroOrInMinus(){
 
         // given a list with Invalid prices
+        every { cityWithZeroPrice.cityName } returns "Rafah"
         every { cityWithZeroPrice.fruitAndVegetablesPrices.banana1kg } returns 0f
+
+        every { cityWithNegativePrice.cityName } returns "KhanYunis"
         every { cityWithNegativePrice.fruitAndVegetablesPrices.banana1kg } returns -3f
 
         every {
@@ -114,7 +116,8 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the cities have an Invalid prices It will be excluded from the list
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute()
+        val actual = cheapestBanana.execute(listOf(cityWithZeroPrice.cityName,
+                                                   cityWithNegativePrice.cityName))
 
         // then it returns an empty list
         assertEquals(listOf<String>() ,actual)
