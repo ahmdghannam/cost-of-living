@@ -17,7 +17,9 @@ class GetCitiesHasTheCheapestBananaPricesInteractor ( private val dataSource: Co
     }
 
     private fun excludeNullAndNegativeBananaPrices(city: CityEntity): Boolean {
-        return city.fruitAndVegetablesPrices.banana1kg != null
-            && city.fruitAndVegetablesPrices.banana1kg > 0f
+        return with(city) {
+                       fruitAndVegetablesPrices.banana1kg != null
+                    && fruitAndVegetablesPrices.banana1kg > 0f
+        }
     }
 }
