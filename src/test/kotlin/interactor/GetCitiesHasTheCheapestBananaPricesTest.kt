@@ -19,6 +19,8 @@ class GetCitiesHasTheCheapestBananaPricesTest{
     @MockK
     private lateinit var cityWithZeroPrice: CityEntity
     @MockK
+    private lateinit var cityWithNanPrice: CityEntity
+    @MockK
     private lateinit var cityWithNegativePrice: CityEntity
     @MockK
     private lateinit var theAveragePriceCityGaza : CityEntity
@@ -55,8 +57,48 @@ class GetCitiesHasTheCheapestBananaPricesTest{
         // when the cities have a valid prices its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
         val actual = cheapestBanana.execute( listOf(", ${theAveragePriceCityGaza.cityName}, " +
-                                                    "${theMostExpensiveCityCairo.cityName}, " +
-                                                    "${theCheapestCityBaghdad.cityName}, "))
+                                                      "${theMostExpensiveCityCairo.cityName}, " +
+                                                      "${theCheapestCityBaghdad.cityName}, "))
+
+        // then it returns sorted list of cities names by cheapest banana prices
+        assertEquals(listOf("Baghdad", "Gaza", "Cairo"), actual)
+    }
+
+    @Test
+    fun should_ReturnSortedListByCheapestBananaPrices_When_TheListIsNotEmptyAndPricesIsValidOrInvalid() {
+
+        // given list of cities with valid prices
+        val citiesList = mutableListOf<CityEntity>()
+
+        every { theAveragePriceCityGaza.cityName } returns "Gaza"
+        every { theAveragePriceCityGaza.fruitAndVegetablesPrices.banana1kg } returns 20f
+        citiesList.add(theAveragePriceCityGaza)
+
+        every { theMostExpensiveCityCairo.cityName } returns "Cairo"
+        every { theMostExpensiveCityCairo.fruitAndVegetablesPrices.banana1kg } returns 25f
+        citiesList.add(theMostExpensiveCityCairo)
+
+        every { cityWithNanPrice.cityName } returns "Rafah"
+        every { cityWithNanPrice.fruitAndVegetablesPrices.banana1kg } returns Float.NaN
+        citiesList.add(cityWithNanPrice)
+
+        every { cityWithNegativePrice.cityName } returns "Hebron"
+        every { cityWithNegativePrice.fruitAndVegetablesPrices.banana1kg } returns -10f
+        citiesList.add(cityWithNegativePrice)
+
+        every { theCheapestCityBaghdad.cityName } returns "Baghdad"
+        every { theCheapestCityBaghdad.fruitAndVegetablesPrices.banana1kg } returns 15f
+        citiesList.add(theCheapestCityBaghdad)
+
+        every { dataSource.getAllCitiesData() }returns citiesList
+
+        // when the cities have a valid prices its sorting by banana prices
+        cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
+        val actual = cheapestBanana.execute( listOf(", ${theAveragePriceCityGaza.cityName}, " +
+                                                      "${theMostExpensiveCityCairo.cityName}, " +
+                                                      "${cityWithNanPrice.cityName}, " +
+                                                      "${cityWithNegativePrice.cityName}, " +
+                                                      "${theCheapestCityBaghdad.cityName}, "))
 
         // then it returns sorted list of cities names by cheapest banana prices
         assertEquals(listOf("Baghdad", "Gaza", "Cairo"), actual)
