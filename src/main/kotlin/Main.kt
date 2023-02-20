@@ -11,6 +11,7 @@ import interactor.*
 
 fun main() {
 
+
     val csvParser = CsvParser()
     val dataSource: CostOfLivingDataSource = CsvDataSource(csvParser) // CSV : comma separated values
 
@@ -82,7 +83,9 @@ fun main() {
     println(getMostExpensiveCityForFruitTradeInteractor.execute("apple"))
     printSeparationLine()
 
-  
+    // 2
+    val GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice = GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(dataSource)
+    println(GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice.execute(1))
 }
 private fun printSeparationLine(){
     print("\n_______________________________\n")
