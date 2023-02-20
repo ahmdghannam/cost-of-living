@@ -7,9 +7,9 @@ import io.mockk.impl.annotations.MockK
 import model.CityEntity
 import model.FoodPrices
 import model.RealEstatesPrices
-import model.TransportationsPrices
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.function.Executable
 
 
 internal class GetCityHasMoreSavingsPerMonthInteractorTest {
@@ -19,57 +19,36 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
     private lateinit var dataSource: CostOfLivingDataSource
 
     @MockK
-    private lateinit var transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull: CityEntity
-
-    @MockK
-    private lateinit var foodPricesWithNull: CityEntity
-
-
-    @MockK
-    private lateinit var averageSalaryWithNull: CityEntity
-
-    @MockK
-    private lateinit var transportationsPricesWithNotNull: CityEntity
-
-    @MockK
-    private lateinit var apartmentPricesWithNull: CityEntity
-
-
-    @MockK
-    private lateinit var transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull: CityEntity
-
+    private lateinit var cityEntityPrices: CityEntity
 
     @BeforeEach
     fun setup() {
         MockKAnnotations.init(this)
+        every {
+            cityEntityPrices.cityName
+        }returns "Gaza"
 
     }
 
     @Test
     fun should_ReturnCity_When_ApartmentAndCostFoodNotNullAndTransportationsIsNull() {
 
-        // given city with apartment and cost food not null and transportations is null
-
+        // given city with apartment and cost food not null
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns FoodPrices(10f,20f,30f,40f,10f,50f)
 
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.realEstatesPrices
-        }returns RealEstatesPrices(10f,20f,30f,40f,10f,50f)
+            cityEntityPrices.realEstatesPrices
+        }returns RealEstatesPrices(null,20f,30f,40f,10f,50f)
 
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.averageMonthlyNetSalaryAfterTax
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
         }returns 200f
 
         every {
-            transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull.transportationsPrices
-        }returns TransportationsPrices(null,null,null,null,null,null)
-
-        every {
             dataSource.getAllCitiesData()
-        } returns listOf(transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull)
-
+        } returns listOf(cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
@@ -77,174 +56,137 @@ internal class GetCityHasMoreSavingsPerMonthInteractorTest {
         val getCity = citySavings.execute()
 
 
-        // done
-        assertEquals(transportationsNullAndFoodPriceAndApartmentAndAverageSalaryNotNull, getCity)
+        // then
+        assertEquals(cityEntityPrices, getCity)
 
 
     }
     @Test
-    fun should_ReturnNull_When_FoodPriceNull() {
+    fun should_ThrowException_When_FoodPriceNull() {
 
         // given city with food price is null
         every {
-            foodPricesWithNull.foodPrices
-        } returns FoodPrices(10f,20f,null,40f,10f,50f)
-
-        every {
-            foodPricesWithNull.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,null,40f,10f,50f)
+            cityEntityPrices.foodPrices
+        } returns FoodPrices(null,20f,null,40f,10f,50f)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf(foodPricesWithNull)
+        } returns listOf(cityEntityPrices)
+
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        // done
-        assertNull(getNull)
+
+        // then it throws an exception
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
     }
     @Test
-    fun should_ReturnNull_When_ApartmentNull() {
+    fun should_ThrowException_When_ApartmentNull() {
 
         // given city with apartment is null
         every {
-            apartmentPricesWithNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
 
         every {
-            apartmentPricesWithNull.realEstatesPrices
+            cityEntityPrices.realEstatesPrices
         } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
 
         every {
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
+        }returns 20f
+
+        every {
             dataSource.getAllCitiesData()
-        } returns listOf( apartmentPricesWithNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        // done
-        assertNull(getNull)
+        //  then it throws an exception
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
     }
 
     @Test
-    fun should_ReturnNull_When_AverageSalaryNull() {
+    fun should_ThrowException_When_AverageSalaryNull() {
 
         // given city with average salary  null
         every {
-            averageSalaryWithNull.foodPrices
+            cityEntityPrices.foodPrices
         }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
 
         every {
-            averageSalaryWithNull.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
+            cityEntityPrices.realEstatesPrices
+        } returns RealEstatesPrices(10f,20f,10f,20f,10f,15f)
 
         every {
-            averageSalaryWithNull.averageMonthlyNetSalaryAfterTax
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
         } returns null
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf( averageSalaryWithNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        // done
-        assertNull(getNull)
+        // then it throws an exception
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
     }
 
 
     @Test
-    fun should_ReturnNull_When_TransportationsNotNull() {
+    fun should_ThrowException_When_FoodPriceAndApartmentAndAverageSalaryNull() {
 
-        // given city transportations not null
+        // given city and food price And apartment is null
         every {
-            transportationsPricesWithNotNull.foodPrices
-        }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
+            cityEntityPrices.foodPrices
+        }returns  FoodPrices(null,null,null,15f,25f,40f)
 
         every {
-            transportationsPricesWithNotNull.realEstatesPrices
+            cityEntityPrices.realEstatesPrices
         } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
 
         every {
-            transportationsPricesWithNotNull.averageMonthlyNetSalaryAfterTax
-        } returns 500f
+            cityEntityPrices.averageMonthlyNetSalaryAfterTax
+        } returns null
 
-        every {
-            transportationsPricesWithNotNull.transportationsPrices
-        }returns TransportationsPrices(10f,20f,30f,40f,50f,60f)
 
         every {
             dataSource.getAllCitiesData()
-        } returns listOf( transportationsPricesWithNotNull)
+        } returns listOf( cityEntityPrices)
 
 
         // when find the most  city in the world have more savings per month.
         citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
+        val savingCityExecutable = Executable { citySavings.execute()}
 
 
-        // done
-        assertNull(getNull)
+        // then it throws an exception
+        assertThrows(Exception::class.java,savingCityExecutable)
 
 
-    }
-
-
-    @Test
-    fun should_ReturnNull_When_TransportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull() {
-
-        // given city with transportations not null and food price And apartment is null
-        every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.foodPrices
-        }returns  FoodPrices(10f,20f,30f,15f,25f,40f)
-
-        every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.realEstatesPrices
-        } returns RealEstatesPrices(10f,20f,null,null,10f,15f)
-
-        every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.averageMonthlyNetSalaryAfterTax
-        } returns 500f
-
-        every {
-            transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull.transportationsPrices
-        }returns TransportationsPrices(10f,20f,30f,40f,50f,60f)
-
-        every {
-            dataSource.getAllCitiesData()
-        } returns listOf( transportationsNotNullAndFoodPriceAndApartmentAndAverageSalaryNull)
-
-
-        // when find the most  city in the world have more savings per month.
-        citySavings = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
-        val getNull = citySavings.execute()
-
-
-        //done
-        assertNull(getNull)
 
     }
 
 
 
 }
-
 
 
 
