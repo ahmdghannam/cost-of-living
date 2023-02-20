@@ -66,6 +66,12 @@ fun main() {
     val getCityHasMoreSavingsPerMonthInteractor = GetCityHasMoreSavingsPerMonthInteractor(dataSource)
     println(getCityHasMoreSavingsPerMonthInteractor.execute())
     printSeparationLine()
+
+    //get most expensive city for fruit trade
+    val getMostExpensiveCityForFruitTradeInteractor = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
+    println(getMostExpensiveCityForFruitTradeInteractor.execute("apple"))
+    printSeparationLine()
+
 }
 
 private fun printSeparationLine() {
