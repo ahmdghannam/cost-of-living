@@ -1,20 +1,34 @@
-import dataSource.CsvDataSource
-import dataSource.utils.CsvParser
+import FakeData.FakeData
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import interactor.CostOfLivingDataSource
-// JUnit test to check if the findCityWithHighestRentPriceDifference() method works as expected
-class GetHighestDifferanceBetween_CityCenterAndOutsideTest {
-    @Test
-    fun findCityWithHighestApartmentRentDifferenceTest() {
-        // Create an instance of the CsvParser class
-        val csvParser = CsvParser()
-        // Create an instance of the CsvDataSource class that uses the CsvParser instance
-        val dataSource: CostOfLivingDataSource = CsvDataSource(csvParser)
-        // Create an instance of the Find_City class
-        val findCity = GetHighestDifferanceBetweenCityCenterAndOutside(dataSource)
-        // Call the findCityWithHighestRentPriceDifference() method to find the city with the highest rent difference
-        val cityWithHighestDifference = findCity.execute()
-        // Print the result
-        println("City with highest apartment rent difference: $cityWithHighestDifference")
+import org.junit.jupiter.api.TestInstance
+import kotlin.test.assertEquals
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+internal class GetHighestDifferanceBetween_CityCenterAndOutsideTest {
+
+    private lateinit var highestDifferentRent: GetHighestDifferanceBetweenCityCenterAndOutside
+    private lateinit var fakedata: FakeData
+
+    @BeforeAll
+    fun setUp() {
+        fakedata = FakeData()
+        highestDifferentRent = GetHighestDifferanceBetweenCityCenterAndOutside(fakedata)
     }
+
+    @Test
+    fun should_ReturnCorrectCity_When_TypeOne() {
+        val type = TheTypeOfApartments.ONE_BED_ROOM
+        val city = highestDifferentRent.execute(type)
+        assertEquals(fakedata.getAllCitiesData()[2], city)
+    }
+
+    @Test
+    fun should_ReturnCorrectCity_When_TypeTwo() {
+        val type = TheTypeOfApartments.THREE_BED_ROOMS
+        val city = highestDifferentRent.execute(type)
+        assertEquals(fakedata.getAllCitiesData()[5], city)
+    }
+
+
 }

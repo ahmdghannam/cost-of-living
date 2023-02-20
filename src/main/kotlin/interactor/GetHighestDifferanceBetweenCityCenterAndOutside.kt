@@ -1,37 +1,54 @@
 import interactor.CostOfLivingDataSource
-import kotlin.math.abs
-class GetHighestDifferanceBetweenCityCenterAndOutside (val dataSource: CostOfLivingDataSource){
-    // Method to find the city with the highest difference in apartment rent prices in the city center and outside of it
-    fun execute(): String {
-        // Get all the data of all cities
-        val allCitiesData = dataSource.getAllCitiesData()
+import model.CityEntity
+import java.lang.Math.abs
 
-        // Initialize the city with the highest difference in apartment rent prices
-        var cityWithHighestDifference = ""
+//A class to get the city with the highest difference between the cost of living in the city center and outside
+class GetHighestDifferanceBetweenCityCenterAndOutside(
+    private val dataSource: CostOfLivingDataSource
+) {
 
-        // Initialize the highest difference in apartment rent prices
-        var highestDifference = 0f
+    // A function to execute the logic to get the city with the highest difference
+    fun execute(type: TheTypeOfApartments): CityEntity {
+        if (type == TheTypeOfApartments.ONE_BED_ROOM) {
+            return dataSource.getAllCitiesData()
+                .filter(::excludeNullRentOneTypeOneAndLowQualityData)
+                .maxByOrNull {
+                    abs(
+                        it.realEstatesPrices.apartmentOneBedroomInCityCentre!!
+                                - it.realEstatesPrices.apartmentOneBedroomOutsideOfCentre!!
+                    )
+                }!!
 
-        // Iterate over each city's data
-        for (cityData in allCitiesData) {
-            // Check if the data quality of the city is good and if the data for the 3 bedroom apartment prices in the city center and outside of it exists
-            if (cityData.dataQuality && cityData.realEstatesPrices.apartment3BedroomsInCityCentre != null
-                && cityData.realEstatesPrices.apartment3BedroomsOutsideOfCentre != null
-            ) {
-                // Calculate the difference in apartment rent prices
-                val currentDifference = abs(
-                    cityData.realEstatesPrices.apartment3BedroomsInCityCentre - cityData.realEstatesPrices.apartment3BedroomsOutsideOfCentre
-                )
+        } else {
+            return dataSource.getAllCitiesData()
+                .filter(::excludeNullRentOneTypeTwoAndLowQualityData)
+                .maxByOrNull {
+                    abs(
+                        it.realEstatesPrices.apartment3BedroomsInCityCentre!! -
+                                it.realEstatesPrices.apartment3BedroomsOutsideOfCentre!!
+                    )
+                }!!
 
-                // If the current difference is higher than the highest difference, update the city with the highest difference and the highest difference value
-                if (currentDifference > highestDifference) {
-                    highestDifference = currentDifference
-                    cityWithHighestDifference = cityData.cityName
-                }
-            }
         }
+    }
+   // A function to filter out cities with null or low-quality data for one-bedroom apartment
+    private fun excludeNullRentOneTypeOneAndLowQualityData(city: CityEntity): Boolean {
+        return city.dataQuality
+                && city.realEstatesPrices.apartmentOneBedroomInCityCentre != null
+                && city.realEstatesPrices.apartmentOneBedroomOutsideOfCentre != null
+    }
 
-        // Return the city with the highest difference in apartment rent prices
-        return cityWithHighestDifference
+    // A function to filter out cities with null or low-quality data for three-bedroom apartment
+    private fun excludeNullRentOneTypeTwoAndLowQualityData(city: CityEntity): Boolean {
+
+        return city.dataQuality
+                && city.realEstatesPrices.apartment3BedroomsInCityCentre != null
+                && city.realEstatesPrices.apartment3BedroomsOutsideOfCentre != null
+
+
     }
 }
+
+
+
+
