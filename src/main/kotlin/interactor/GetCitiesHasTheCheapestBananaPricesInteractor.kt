@@ -10,13 +10,14 @@ class GetCitiesHasTheCheapestBananaPricesInteractor ( private val dataSource: Co
 
         return dataSource
                 .getAllCitiesData()
-                .filter {excludeNullAndNegativeBananaPrices(it) && it.cityName in cities.toList().toString()}
+                .filter {excludeNullAndNegativeBananaPrices(it)
+                        && cities.toList().toString().split(", ").contains(it.cityName)}
                 .sortedBy { it.fruitAndVegetablesPrices.banana1kg }
                 .map { it.cityName }
     }
 
     private fun excludeNullAndNegativeBananaPrices(city: CityEntity): Boolean {
         return city.fruitAndVegetablesPrices.banana1kg != null
-                && city.fruitAndVegetablesPrices.banana1kg > 0f
+            && city.fruitAndVegetablesPrices.banana1kg > 0f
     }
 }

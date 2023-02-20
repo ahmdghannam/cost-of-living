@@ -51,9 +51,9 @@ fun main() {
     printSeparationLine()
 
     //7
-    val listOfCities = listOf("Santiago de Cuba", "Sancti Spiritus", "Santa Clara", "Jaramana", "Havana",
+    val listOfCities = listOf(", Santiago de Cuba", "Sancti Spiritus", "Santa Clara", "Jaramana", "Havana",
         "Moratuwa", "Las Tunas", "Latakia", "Hamah", "Damascus", "Uyo",
-        "Tamale", "Kasese", "Aleppo", "Saddiqabad")
+        "Tamale", "Kasese", "Aleppo", "Saddiqabad", )
     val getCitiesHasTheCheapestBananaPricesInteractor = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
     println(getCitiesHasTheCheapestBananaPricesInteractor.execute(listOfCities))
     printSeparationLine()
