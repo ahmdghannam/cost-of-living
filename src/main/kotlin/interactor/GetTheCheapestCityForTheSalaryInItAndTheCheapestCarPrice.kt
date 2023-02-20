@@ -8,7 +8,7 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(
     fun execute(limit:Int):List<CityEntity>{
       return  dataSource.getAllCitiesData()
           .filter(::excludeNullFoodPricesAndNullGasoLineAndNullSalaryAverageAndCheapestPriceOfGasoLine)
-          .sortedBy(::TheCheapestCarsPrices)
+          .sortedBy(::theCheapestCarsPrices)
           .take(limit)
     }
 
@@ -21,7 +21,7 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(
 
     }
 
-    private fun excludeNullGasoLine(city:CityEntity):Boolean{
+    private fun excludeNullGasoline(city:CityEntity):Boolean{
           return  city.transportationsPrices.gasolineOneLiter != null
     }
 
@@ -30,23 +30,23 @@ class GetTheCheapestCityForTheSalaryInItAndTheCheapestCarPrice(
 
     }
 
-    fun  excludeNullFoodPricesAndNullGasoLineAndNullSalaryAverageAndCheapestPriceOfGasoLine(city: CityEntity):Boolean{
+    private fun  excludeNullFoodPricesAndNullGasoLineAndNullSalaryAverageAndCheapestPriceOfGasoLine(city: CityEntity):Boolean{
         return  excludeNullCarsPrices(city)
-                && excludeNullGasoLine(city)
+                && excludeNullGasoline(city)
                 && excludeNullSalaryAverageMonthly(city)
-                && TheCheapestPriceOfGasoLineInRelationToTheSalary(city)
+                && theCheapestPriceOfGasoLineInRelationToTheSalary(city)
     }
 
 
 
-    private  fun TheCheapestPriceOfGasoLineInRelationToTheSalary(city: CityEntity):Boolean{
-        val PercentOfTheSalary= 0.15f
-        val NumberOfLitersPerMonth= 50
-        return    city.transportationsPrices.gasolineOneLiter!! * NumberOfLitersPerMonth /
-                  city.averageMonthlyNetSalaryAfterTax!! <= PercentOfTheSalary
+    private  fun theCheapestPriceOfGasoLineInRelationToTheSalary(city: CityEntity):Boolean{
+        val percentOfTheSalary= 0.15f
+        val numberOfLitersPerMonth= 50
+        return    city.transportationsPrices.gasolineOneLiter!! * numberOfLitersPerMonth /
+                  city.averageMonthlyNetSalaryAfterTax!! <= percentOfTheSalary
     }
 
-    private  fun TheCheapestCarsPrices(city: CityEntity):Float{
+    private  fun theCheapestCarsPrices(city: CityEntity):Float{
      return  minOf(city.carsPrices.toyotaCorollaSedan_1_6l_97kwComfortOrEquivalentNewCar!!,
             city.carsPrices.volkswagenGolf_1_4_90kwTrendLineOrEquivalentNewCar!!)
     }
