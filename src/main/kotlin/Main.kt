@@ -1,17 +1,17 @@
 import dataSource.CsvDataSource
 import dataSource.utils.CsvParser
 import interactor.CostOfLivingDataSource
-import interactor.GetAvgFruitNVeggieInteractor
 import interactor.GetCityHasCheapestInternetConnectionInteractor
+import interactor.GetCityThatHasAverageMealsPricesInteractor
 import interactor.GetHighestSalaryAverageCititesNamesInteractor
 
 import interactor.*
 
 
 fun main() {
+
     val csvParser = CsvParser()
     val dataSource: CostOfLivingDataSource = CsvDataSource(csvParser) // CSV : comma separated values
-
 
     // bareq
     val getHighestSalaryAverageCities = GetHighestSalaryAverageCititesNamesInteractor(dataSource)
@@ -50,6 +50,12 @@ fun main() {
 
     //7
 
+    val listOfCities = listOf("Santiago de Cuba", "Sancti Spiritus", "Santa Clara", "Jaramana", "Havana",
+        "Moratuwa", "Las Tunas", "Latakia", "Hamah", "Damascus", "Uyo",
+        "Tamale", "Kasese", "Aleppo", "Saddiqabad")
+    val getCitiesHasTheCheapestBananaPricesInteractor = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
+    println(getCitiesHasTheCheapestBananaPricesInteractor.execute(listOfCities))
+    printSeparationLine()
 
     //8
     val getCityThatHasAverageMealsPricesInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
@@ -67,14 +73,17 @@ fun main() {
     println(getCityHasMoreSavingsPerMonthInteractor.execute())
     printSeparationLine()
 
-    //get most expensive city for fruit trade
+    // new features for this week
+
+    // 1- get most expensive city for fruit trade
     val getMostExpensiveCityForFruitTradeInteractor = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
     println(getMostExpensiveCityForFruitTradeInteractor.execute("apple"))
     printSeparationLine()
 
+  
 }
-
-private fun printSeparationLine() {
+private fun printSeparationLine(){
     print("\n_______________________________\n")
+
 }
 
