@@ -7,6 +7,7 @@ import model.CityEntity
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.function.Executable
 
 class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractorTest {
     private lateinit var countries:GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor
@@ -19,16 +20,18 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractorTest {
     }
 
     @Test
-    fun should_ReturnNull_When_TheListIsEmpty() {
+    fun should_ThrowException_When_TheListIsEmpty() {
 
         every { dataSource.getAllCitiesData() }returns emptyList()
 
         // given empty list
         countries = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor(dataSource)
         // when the list is empty
-        val country = countries.execute(0)
+        val country = Executable{countries.execute(10)}
         // then
-        assertNull(country)
+        assertThrows(Exception::class.java){
+            country.execute()
+        }
     }
     @Test
     fun should_ReturnAllCountries_When_ProvidedLessThan10Countries() {
