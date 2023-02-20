@@ -1,5 +1,6 @@
 import dataSource.CsvDataSource
 import dataSource.utils.CsvParser
+import dataSource.utils.TheTypeOfApartments
 import interactor.CostOfLivingDataSource
 import interactor.GetCityHasCheapestInternetConnectionInteractor
 import interactor.GetCityThatHasAverageMealsPricesInteractor

@@ -1,3 +1,4 @@
+import dataSource.utils.TheTypeOfApartments
 import interactor.CostOfLivingDataSource
 import model.CityEntity
 import java.lang.Math.abs
