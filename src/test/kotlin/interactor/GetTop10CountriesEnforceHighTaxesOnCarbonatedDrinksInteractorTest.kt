@@ -60,71 +60,26 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractorTest {
     }
     @Test
     fun should_ReturnTop10CountriesEnforceHighTaxesOnCarbonatedDrinks_When_ProvidedMoreThan10Countries() {
-        val city1 = mockk<CityEntity>()
-        val city2 = mockk<CityEntity>()
-        val city3 = mockk<CityEntity>()
-        val city4 = mockk<CityEntity>()
-        val city5 = mockk<CityEntity>()
-        val city6 = mockk<CityEntity>()
-        val city7 = mockk<CityEntity>()
-        val city8 = mockk<CityEntity>()
-        val city9 = mockk<CityEntity>()
-        val city10 = mockk<CityEntity>()
-        val city11 = mockk<CityEntity>()
-        val city12 = mockk<CityEntity>()
 
-        every { city1.country }returns "Palestine"
-        every { city1.dataQuality }returns true
-        every { city1.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  12f
-
-        every { city2.country }returns "Pakistan"
-        every { city2.dataQuality }returns true
-        every { city2.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  11f
-
-        every { city3.country }returns "Egypt"
-        every { city3.dataQuality }returns true
-        every { city3.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  10f
-
-        every { city4.country }returns "Iraq"
-        every { city4.dataQuality }returns true
-        every { city4.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  9f
-
-        every { city5.country }returns "Morocco"
-        every { city5.dataQuality }returns true
-        every { city5.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  8f
-
-        every { city6.country }returns "USA"
-        every { city6.dataQuality }returns true
-        every { city6.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  7f
-
-        every { city7.country }returns "Jordan"
-        every { city7.dataQuality }returns true
-        every { city7.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  6f
-
-        every { city8.country }returns "France"
-        every { city8.dataQuality }returns true
-        every { city8.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  5f
-
-        every { city9.country }returns "Lebanon"
-        every { city9.dataQuality }returns true
-        every { city9.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  4f
-
-        every { city10.country }returns "Algeria"
-        every { city10.dataQuality }returns true
-        every { city10.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  3f
-
-        every { city11.country }returns "Tunisia"
-        every { city11.dataQuality }returns true
-        every { city11.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  2f
-
-        every { city12.country }returns "Saudi Arabia"
-        every { city12.dataQuality }returns true
-        every { city12.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants }returns  1f
+        // resources lists
+        val namesOfCountries= listOf("Palestine","Pakistan","Egypt","Iraq","Morocco","USA","Jordan","France","Lebanon","Algeria","Tunisia","Saudi Arabia")
+        val carbonatedDrinksPrices= listOf( 12f,11f,10f,9f,8f,7f,6f,5f,4f,3f,2f,1f,)
 
 
+        val list= mutableListOf<CityEntity>()
+
+        for (i in 0 until 12){
+            val city =mockk<CityEntity>()
+            every { city.country }returns namesOfCountries[i]
+            every { city.dataQuality }returns true
+            every { city.drinksPrices.cokePepsiAThirdOfLiterBottleInRestaurants } returns carbonatedDrinksPrices[i]
+            list.add(city)
+        }
         every {
             dataSource.getAllCitiesData()
-        }returns listOf(city1 , city2 , city3,city4,city5,city6,city7,city8,city9,city10,city11,city12)
+        }returns list
+
+
 
         // given list has less than 10 countries
         countries = GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractor(dataSource)
@@ -134,7 +89,8 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractorTest {
 
 
         // then
-        assertEquals(listOf(
+
+        val pairs= listOf(
             Pair("Palestine" , 12f) ,
             Pair("Pakistan" , 11f),
             Pair("Egypt" , 10f) ,
@@ -144,9 +100,9 @@ class GetTop10CountriesEnforceHighTaxesOnCarbonatedDrinksInteractorTest {
             Pair("Jordan" , 6f) ,
             Pair("France" , 5f),
             Pair("Lebanon" , 4f) ,
-            Pair("Algeria" , 3f),
+            Pair("Algeria" , 3f),)
 
-        ), allCountries)
+        assertEquals(pairs, allCountries)
     }
 
 }
