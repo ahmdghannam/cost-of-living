@@ -3,15 +3,16 @@ package interactor
 import model.CityEntity
 import model.MealsPrices
 import java.lang.Exception
+import kotlin.math.abs
 
 class GetCityThatHasAverageMealsPricesInteractor(private val dataSource: CostOfLivingDataSource) {
     fun execute(selectedCountryNames: List<String>): CityEntity {
-        require(selectedCountryNames.isNotEmpty()) { "selected country names must not be empty" } // add tests for this
+        require(selectedCountryNames.isNotEmpty()) { "selected country names must not be empty" }
         return dataSource.getAllCitiesData()
             .filter { excludeCitiesNotInTheSelectedCountriesAndCitiesWithInvalidMealsPrices(it, selectedCountryNames) }
             .ifEmpty { emptyList() }
             .run {
-                minByOrNull { calculateAverageMealsPrices(it) - getAverageMealPriceExactlyBetweenMinAndMax() }
+                minByOrNull { abs(calculateAverageMealsPrices(it) - getAverageMealPriceExactlyBetweenMinAndMax()) }
                     ?: throw Exception("couldn't find a city that matches the manager expectations")
             }
     }
