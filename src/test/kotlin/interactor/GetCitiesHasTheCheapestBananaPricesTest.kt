@@ -56,9 +56,9 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the cities have a valid prices its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute( listOf(", ${theAveragePriceCityGaza.cityName}, " +
-                                                      "${theMostExpensiveCityCairo.cityName}, " +
-                                                      "${theCheapestCityBaghdad.cityName}, "))
+        val actual = cheapestBanana.execute( theAveragePriceCityGaza.cityName,
+                                             theMostExpensiveCityCairo.cityName,
+                                             theCheapestCityBaghdad.cityName)
 
         // then it returns sorted list of cities names by cheapest banana prices
         assertEquals(listOf("Baghdad", "Gaza", "Cairo"), actual)
@@ -94,11 +94,11 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the cities have a valid prices its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute( listOf(", ${theAveragePriceCityGaza.cityName}, " +
-                                                      "${theMostExpensiveCityCairo.cityName}, " +
-                                                      "${cityWithNanPrice.cityName}, " +
-                                                      "${cityWithNegativePrice.cityName}, " +
-                                                      "${theCheapestCityBaghdad.cityName}, "))
+        val actual = cheapestBanana.execute( theAveragePriceCityGaza.cityName,
+                                             theMostExpensiveCityCairo.cityName,
+                                             cityWithNanPrice.cityName,
+                                             cityWithNegativePrice.cityName,
+                                             theCheapestCityBaghdad.cityName, )
 
         // then it returns sorted list of cities names by cheapest banana prices
         assertEquals(listOf("Baghdad", "Gaza", "Cairo"), actual)
@@ -120,7 +120,7 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the city has a valid price its sorting by banana prices
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute( listOf(", ${oneCityWithValidBananaPrice.cityName}, "))
+        val actual = cheapestBanana.execute( oneCityWithValidBananaPrice.cityName)
 
         // then it returns the name of this city
         assertEquals(listOf("gaza"), actual)
@@ -136,7 +136,7 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the list haven't any city
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute(listOf())
+        val actual = cheapestBanana.execute()
 
         // then it returns an empty list
         assertEquals(listOf<String>(),actual)
@@ -158,8 +158,8 @@ class GetCitiesHasTheCheapestBananaPricesTest{
 
         // when the cities have an Invalid prices It will be excluded from the list
         cheapestBanana = GetCitiesHasTheCheapestBananaPricesInteractor(dataSource)
-        val actual = cheapestBanana.execute(listOf(cityWithZeroPrice.cityName,
-                                                   cityWithNegativePrice.cityName))
+        val actual = cheapestBanana.execute(cityWithZeroPrice.cityName,
+                                            cityWithNegativePrice.cityName)
 
         // then it returns an empty list
         assertEquals(listOf<String>() ,actual)
