@@ -5,7 +5,7 @@ import model.CityEntity
 /*
 * get best trade line for chosen fruit
 * */
-class GetMostExpensiveCityForFruitTradeInteractor(
+class GetBestTradeLineBetweenCitiesInteractor(
     private val dataSource: CostOfLivingDataSource,
 ) {
     fun execute(nameFruit: String): String {

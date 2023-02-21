@@ -75,8 +75,8 @@ fun main() {
     // new features for this week
 
     // 1
-    val getMostExpensiveCityForFruitTradeInteractor = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
-    println(getMostExpensiveCityForFruitTradeInteractor.execute("apple"))
+    val getBestTradeLineBetweenCitiesInteractor = GetBestTradeLineBetweenCitiesInteractor(dataSource)
+    println(getBestTradeLineBetweenCitiesInteractor.execute("apple"))
     printSeparationLine()
 
     // 2

@@ -10,9 +10,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
 
-class GetMostExpensiveCityForFruitTradeInteractorTest{
+class GetBestTradeLineBetweenCitiesInteractorTest{
 
-    private lateinit var cityFruit: GetMostExpensiveCityForFruitTradeInteractor
+    private lateinit var cityFruit: GetBestTradeLineBetweenCitiesInteractor
 
     @MockK
     private lateinit var dataSource: CostOfLivingDataSource
@@ -57,7 +57,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         } returns listOf(cityEntityPrices)
 
         //when get most expensive city for fruit trade
-        cityFruit = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
+        cityFruit = GetBestTradeLineBetweenCitiesInteractor(dataSource)
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
@@ -79,7 +79,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         } returns listOf(cityEntityPrices)
 
         //when get most expensive city for fruit trade
-        cityFruit = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
+        cityFruit = GetBestTradeLineBetweenCitiesInteractor(dataSource)
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
@@ -102,7 +102,7 @@ class GetMostExpensiveCityForFruitTradeInteractorTest{
         } returns listOf(cityEntityPrices)
 
         //when get most expensive city for fruit trade
-        cityFruit = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
+        cityFruit = GetBestTradeLineBetweenCitiesInteractor(dataSource)
         val cityFruitExecutable = Executable { cityFruit.execute(nameFruit)}
 
 
