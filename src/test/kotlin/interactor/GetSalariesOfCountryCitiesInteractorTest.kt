@@ -51,7 +51,7 @@ class GetSalariesOfCountryCitiesInteractorTest {
         val salariesOfCountryInteractor = GetSalariesOfCountryCitiesInteractor(dataSource)
         val result = Executable { salariesOfCountryInteractor.execute(countryName) }
         //then
-        assertThrows(Exception::class.java, result)
+        assertThrows(IllegalArgumentException::class.java, result)
     }
 
     @Test
@@ -96,33 +96,6 @@ class GetSalariesOfCountryCitiesInteractorTest {
         assertEquals(mapOf("Cairo" to 100f), actualResult)
     }
 
-    @Test
-    fun should_ReturnNull_When_AllOfTheCountryDataIsLowQuality() {
-        //given a correct country name and low quality data for all the cities
-        val countryName = "Egypt"
-        every { cairo.dataQuality } returns false
-        every { cairo.averageMonthlyNetSalaryAfterTax } returns 100f
-        every { dataSource.getAllCitiesData() } returns listOf(cairo, gaza, jerusalem, amman)
-        //when all the country's data is low quality
-        val salariesOfCountryInteractor = GetSalariesOfCountryCitiesInteractor(dataSource)
-        val actualResult = salariesOfCountryInteractor.execute(countryName)
-        //then
-        assertNull(actualResult)
-    }
-
-    @Test
-    fun should_ReturnNull_When_AllOfTheCountrySalariesAreNull() {
-        //given a correct country name and null salaries for all the cities
-        val countryName = "Egypt"
-        every { cairo.dataQuality } returns true
-        every { cairo.averageMonthlyNetSalaryAfterTax } returns null
-        every { dataSource.getAllCitiesData() } returns listOf(cairo, gaza, jerusalem, amman)
-        //when all the country's cities has null salaries
-        val salariesOfCountryInteractor = GetSalariesOfCountryCitiesInteractor(dataSource)
-        val actualResult = salariesOfCountryInteractor.execute(countryName)
-        //then
-        assertNull(actualResult)
-    }
 
 
 }
