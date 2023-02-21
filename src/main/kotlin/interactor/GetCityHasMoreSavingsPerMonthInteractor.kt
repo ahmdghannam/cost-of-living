@@ -1,74 +1,67 @@
 package interactor
 
 import model.CityEntity
+import model.FoodPrices
+import model.RealEstatesPrices
 
 
 class GetCityHasMoreSavingsPerMonthInteractor(
     private val dataSource: CostOfLivingDataSource,
 ) {
 
+    fun execute(): CityEntity {
+        return dataSource
+            .getAllCitiesData()
+            .filter(::excludeNullFoodPricesAndApartmentAndSalary)
+            .maxByOrNull(::countSavingsPerMonth)?: throw  Exception("no city with the highest savings")
+    }
+}
 
-    fun execute(): CityEntity? {
-        return dataSource.getAllCitiesData()
-            .asSequence()
-            .filter(::excludeNullFoodPrices)
-            .filter(::excludeNullApartment)
-            .filter(::excludeNullAverageMonthly)
-            .filter(::excludeTransportationsPrices)
-            .maxByOrNull(::countSavingsPerMonth)
+
+private fun excludeNullFoodPricesAndApartmentAndSalary(city: CityEntity): Boolean {
+    return excludeNullFoodPrices(city.foodPrices) &&
+            excludeNullApartmentPriceAndSalary( city.realEstatesPrices,
+                city.averageMonthlyNetSalaryAfterTax )
+}
+
+private fun excludeNullFoodPrices(foodPrices: FoodPrices): Boolean {
+    return foodPrices.let {
+                it.localCheese1kg != null &&
+                it.loafOfFreshWhiteBread500g != null &&
+                it.beefRound1kgOrEquivalentBackLegRedMeat != null &&
+                it.chickenFillets1kg != null &&
+                it.riceWhite1kg != null
     }
 
-
 }
 
-
-private fun excludeNullFoodPrices(city: CityEntity): Boolean {
-    return city.foodPrices.loafOfFreshWhiteBread500g != null
-            && city.foodPrices.localCheese1kg != null
-            && city.foodPrices.beefRound1kgOrEquivalentBackLegRedMeat != null
-            && city.foodPrices.chickenFillets1kg != null
-            && city.foodPrices.riceWhite1kg != null
-
-}
-
-private fun excludeNullApartment(city: CityEntity): Boolean {
-    return city.realEstatesPrices.apartment3BedroomsInCityCentre != null
-            && city.realEstatesPrices.apartment3BedroomsOutsideOfCentre != null
-
-}
-
-private fun excludeTransportationsPrices(city: CityEntity): Boolean {
-    return city.transportationsPrices.gasolineOneLiter == null
-            && city.transportationsPrices.monthlyPassRegularPrice == null
-            && city.transportationsPrices.taxi1kmNormalTariff == null
-            && city.transportationsPrices.taxi1hourWaitingNormalTariff == null
-            && city.transportationsPrices.oneWayTicketLocalTransport == null
-            && city.transportationsPrices.taxiStartNormalTariff == null
-
-
-}
-
-private fun excludeNullAverageMonthly(city: CityEntity): Boolean {
-    return city.averageMonthlyNetSalaryAfterTax != null
-
+private fun excludeNullApartmentPriceAndSalary(realEstatesPrices: RealEstatesPrices, averageSalary: Float?): Boolean {
+    return realEstatesPrices.apartment3BedroomsInCityCentre != null &&
+            averageSalary != null
 }
 
 private fun countSavingsPerMonth(city: CityEntity): Float {
-    val salaryMonth = city.averageMonthlyNetSalaryAfterTax!! * 2
+    val whiteBreadConsumptionByKG = 30
+    val beefMeatConsumptionByKG = 4
+    val chickenFilletsConsumptionByKG = 10
+    val riceWhiteConsumptionByKG = 2
 
-    val foodPricesAndApartment = (15 * ((city.foodPrices.loafOfFreshWhiteBread500g!! * 2)))
-    +(city.foodPrices.localCheese1kg!!) + (4 * city.foodPrices.beefRound1kgOrEquivalentBackLegRedMeat!!)
-    +(city.foodPrices.chickenFillets1kg!! * 10) + (city.foodPrices.riceWhite1kg!! * 2) +
-            minOf(
-                city.realEstatesPrices.apartment3BedroomsInCityCentre!!,
-                city.realEstatesPrices.apartment3BedroomsOutsideOfCentre!!
-            )
+    val fatherSalary = city.averageMonthlyNetSalaryAfterTax!! * 2
 
-    val otherNeeds = 250
+    val foodCostPerMonth = with(city.foodPrices) {
+                loafOfFreshWhiteBread500g!! * whiteBreadConsumptionByKG +
+                localCheese1kg!! +
+                beefRound1kgOrEquivalentBackLegRedMeat!! * beefMeatConsumptionByKG +
+                chickenFillets1kg!! * chickenFilletsConsumptionByKG +
+                riceWhite1kg!! * riceWhiteConsumptionByKG
+    }
 
-    return (salaryMonth).minus(foodPricesAndApartment).minus(otherNeeds)
+    val apartmentPrice = city.realEstatesPrices.apartment3BedroomsInCityCentre!!
+    val otherNeedsPerMonth = 250f
 
+    return fatherSalary - foodCostPerMonth - apartmentPrice - otherNeedsPerMonth
 }
+
 
 
 
