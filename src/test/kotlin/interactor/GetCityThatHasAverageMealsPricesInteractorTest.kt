@@ -8,10 +8,13 @@ import model.MealsPrices
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.function.Executable
+import java.lang.Exception
 
 class GetCityThatHasAverageMealsPricesInteractorTest {
 
     private lateinit var averageCityInteractor: GetCityThatHasAverageMealsPricesInteractor
+    private val selectedCountriesForTesting = listOf("united States","CanaDa","MeXico")
 
     @MockK
     private lateinit var dataSource: CostOfLivingDataSource
@@ -67,7 +70,7 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when find the city with average meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult = averageCityInteractor.execute(selectedCountriesForTesting)
         // then
         assertEquals(cityWithAverageMealsPrices, actualResult)
 
@@ -96,7 +99,7 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when find the city from valid area and price
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult = averageCityInteractor.execute(selectedCountriesForTesting)
         // then
         assertEquals(cityWithCheapestMealsPrices, actualResult)
 
@@ -116,14 +119,14 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when find the only valid city, no matter how expensive it is
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult = averageCityInteractor.execute(selectedCountriesForTesting)
         // then
         assertEquals(cityWithMostExpensiveMealsPrices, actualResult)
 
     }
 
     @Test
-    fun should_ReturnNull_When_TheCitiesListAllFromValidAreaWithNullPrices() {
+    fun should_ThrowException_When_TheCitiesListAllFromValidAreaWithNullPrices() {
         // given a list of a single city from usa with null prices
         every { cityWithNullMealsPrices.country } returns "United States"
         every {
@@ -132,13 +135,13 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when checking the meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult = Executable{ averageCityInteractor.execute(selectedCountriesForTesting)}
         // then
-        assertNull(actualResult)
+        assertThrows(Exception::class.java,actualResult)
     }
 
     @Test
-    fun should_ReturnNull_When_TheCitiesListAllFromValidAreaWithNegativePrices() {
+    fun should_ThrowException_When_TheCitiesListAllFromValidAreaWithNegativePrices() {
         // given a list of a single city from Mexico with null prices
         every { cityWithNegativeMealsPrices.country } returns "Mexico"
         every {
@@ -147,12 +150,12 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when find the city with average meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult = Executable{  averageCityInteractor.execute(selectedCountriesForTesting)}
         // then
-        assertNull(actualResult)
+        assertThrows(Exception::class.java,actualResult)
     }
     @Test
-    fun should_ReturnNull_When_TheCitiesListAllFromInvalidAreaWithValidPrices() {
+    fun should_ThrowException_When_TheCitiesListAllFromInvalidAreaWithValidPrices() {
         // given a list of cities from Japan, Palestine & Iraq with valid prices
 
         every { cityWithCheapestMealsPrices.country } returns "Japan"
@@ -165,13 +168,13 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when find the city with average meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult = Executable{ averageCityInteractor.execute(selectedCountriesForTesting)}
         // then
-        assertNull(actualResult)
+        assertThrows(Exception::class.java,actualResult)
 
     }
     @Test
-    fun should_ReturnNull_When_TheCitiesListAllFromInvalidAreaWithInvalidPrices() {
+    fun should_ThrowException_When_TheCitiesListAllFromInvalidAreaWithInvalidPrices() {
         // given a list of cities from Japan, Palestine & Iraq with negative & null prices
 
         every { cityWithNullMealsPrices.country } returns "Ukraine"
@@ -183,23 +186,37 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
         //when find the city with average meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult =Executable{ averageCityInteractor.execute(selectedCountriesForTesting)}
         // then
-        assertNull(actualResult)
+        assertThrows(Exception::class.java,actualResult)
 
     }
 
     @Test
-    fun should_ReturnNull_When_TheCitiesListIsEmpty() {
+    fun should_ThrowException_When_TheCitiesListIsEmpty() {
         // given an empty list
         every {
             dataSource.getAllCitiesData()
         } returns emptyList()
         //when find the city with average meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult = averageCityInteractor.execute()
+        val actualResult =Executable{ averageCityInteractor.execute(selectedCountriesForTesting)}
         // then
-        assertNull(actualResult)
+        assertThrows(Exception::class.java,actualResult)
+    }
+
+    @Test
+    fun should_ThrowException_When_TheSelectedCountriesListIsEmpty() {
+        // given an empty list of selected countries
+        val selectedCountries= emptyList<String>()
+        every {
+            dataSource.getAllCitiesData()
+        } returns listOf(cityWithCheapestMealsPrices)
+        //when find the city with average meals prices
+        averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
+        val actualResult =Executable{ averageCityInteractor.execute(selectedCountries)}
+        // then
+        assertThrows(IllegalArgumentException::class.java,actualResult)
     }
 
 
