@@ -207,13 +207,14 @@ class GetCityThatHasAverageMealsPricesInteractorTest {
 
     @Test
     fun should_ThrowException_When_TheSelectedCountriesListIsEmpty() {
-        // given an empty list
+        // given an empty list of selected countries
+        val selectedCountries= emptyList<String>()
         every {
             dataSource.getAllCitiesData()
         } returns listOf(cityWithCheapestMealsPrices)
         //when find the city with average meals prices
         averageCityInteractor = GetCityThatHasAverageMealsPricesInteractor(dataSource)
-        val actualResult =Executable{ averageCityInteractor.execute(emptyList())}
+        val actualResult =Executable{ averageCityInteractor.execute(selectedCountries)}
         // then
         assertThrows(IllegalArgumentException::class.java,actualResult)
     }
