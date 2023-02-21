@@ -26,20 +26,20 @@ class FindTheCheapestTenCitiesApartmentsTest {
 
         for (i in 0 until 100){
             val city= mockk<CityEntity>()
-            every {
-                city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
-            } returns i *1f
-            every {
-                city.averageMonthlyNetSalaryAfterTax
-            } returns 100f
-            every {
-                city.dataQuality
-            } returns true
-
-            every {
-                city.cityName
-            } returns "$i"
-
+            with(city){
+                every {
+                    realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
+                } returns i *1f
+                every {
+                    averageMonthlyNetSalaryAfterTax
+                } returns 100f
+                every {
+                    dataQuality
+                } returns true
+                every {
+                    cityName
+                } returns "$i"
+            }
             list.add(city)
         }
         every {
@@ -60,12 +60,12 @@ class FindTheCheapestTenCitiesApartmentsTest {
         //when find the least cost cities for appartments
         val listOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
-        // then returns null
+        // then return the expected map
         assertEquals(expectedMap,listOfCheapestTenCititesAppartements)
     }
     @Test
     fun should_ReturnEmptyMap_WhenListIsEmpty() {
-        // given null list
+        // given empty list
         every {
             dataSource.getAllCitiesData()
         } returns emptyList()
@@ -75,7 +75,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         //when find the least cost cities for appartments
         val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
-        // then returns null
+        // then returns empty map
         assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
@@ -87,16 +87,18 @@ class FindTheCheapestTenCitiesApartmentsTest {
 
         for (i in 0 until 10){
             val city= mockk<CityEntity>()
-            every {
-                city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
-            } returns -1f
-            every {
-                city.averageMonthlyNetSalaryAfterTax
-            } returns 1f
-            every {
-                city.cityName
-            } returns ""
 
+            with(city) {
+                every {
+                    realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
+                } returns -1f
+                every {
+                    averageMonthlyNetSalaryAfterTax
+                } returns 1f
+                every {
+                    cityName
+                } returns ""
+            }
             list.add(city)
         }
 
@@ -109,7 +111,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         //when find the least cost cities for appartments
         val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
-        // then returns null
+        // then returns empty map
         assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
@@ -121,16 +123,17 @@ class FindTheCheapestTenCitiesApartmentsTest {
 
         for (i in 0 until 10){
             val city= mockk<CityEntity>()
-            every {
-                city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
-            } returns 1f
-            every {
-                city.averageMonthlyNetSalaryAfterTax
-            } returns -1f
-            every {
-                city.cityName
-            } returns ""
-
+            with(city) {
+                every {
+                    realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
+                } returns 1f
+                every {
+                    averageMonthlyNetSalaryAfterTax
+                } returns -1f
+                every {
+                    cityName
+                } returns ""
+            }
             list.add(city)
         }
 
@@ -143,7 +146,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         //when find the least cost cities for appartments
         val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
-        // then returns null
+        // then return empty map
         assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
@@ -156,16 +159,17 @@ class FindTheCheapestTenCitiesApartmentsTest {
 
         for (i in 0 until 10){
             val city= mockk<CityEntity>()
-            every {
-                city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
-            } returns null
-            every {
-                city.averageMonthlyNetSalaryAfterTax
-            } returns 1f
-            every {
-                city.cityName
-            } returns ""
-
+            with(city) {
+                every {
+                    realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
+                } returns null
+                every {
+                    averageMonthlyNetSalaryAfterTax
+                } returns 1f
+                every {
+                    cityName
+                } returns ""
+            }
             list.add(city)
         }
 
@@ -178,7 +182,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         //when find the least cost cities for appartments
         val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
-        // then returns null
+        // then return empty map
         assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 
@@ -190,16 +194,17 @@ class FindTheCheapestTenCitiesApartmentsTest {
 
         for (i in 0 until 10){
             val city= mockk<CityEntity>()
-            every {
-                city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
-            } returns 1f
-            every {
-                city.averageMonthlyNetSalaryAfterTax
-            } returns null
-            every {
-                city.cityName
-            } returns ""
-
+            with(city) {
+                every {
+                    realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre
+                } returns 1f
+                every {
+                    averageMonthlyNetSalaryAfterTax
+                } returns null
+                every {
+                    cityName
+                } returns ""
+            }
             list.add(city)
         }
 
@@ -212,7 +217,7 @@ class FindTheCheapestTenCitiesApartmentsTest {
         //when find the least cost cities for appartments
         val mapOfCheapestTenCititesAppartements=cheapestApartments.execute(10)
 
-        // then returns null
+        // then return empty map
         assertTrue(mapOfCheapestTenCititesAppartements.isEmpty())
     }
 

@@ -6,42 +6,56 @@ class FindTheCheapestTenCitiesApartments(
     private val dataSource: CostOfLivingDataSource
 ) {
 
-    fun execute(limit:Int): Map<String, Double> {
+    fun execute(limit: Int): Map<String, Double> {
         return dataSource
             .getAllCitiesData()
             .filter(::excludeNullAndNegativeSalariesAndApartmentsCostsAndLowQualityData)
-            .sortedBy {
-                it.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!
-                    .div(it.averageMonthlyNetSalaryAfterTax!!)
-            }
+            .sortedBy(::sortCondition)
             .take(limit)
-            .associate {city ->
-                val costOf100mApartment=city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!.times(100)
-                val yearSalary=city.averageMonthlyNetSalaryAfterTax!!*12
-                val numberOfYears=costOf100mApartment/yearSalary.toDouble()
-                city.cityName to numberOfYears
-            }
+            .associate(::pairOfCityNameAndNumberOfYearsNeededToBuyAnApartment)
     }
 
 
+    private fun sortCondition(city: CityEntity): Float {
+        with(city) {
+            return realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!!
+                .div(averageMonthlyNetSalaryAfterTax!!)
+        }
+    }
 
-    private fun excludeNullAndNegativeSalariesAndApartmentsCostsAndLowQualityData(city: CityEntity):Boolean{
-        return excludeNullSalariesOrNullApartmentsCosts(city)&&
-                excludeNegativeSalariesOrNegativeInternetCosts(city)&&
+    private fun pairOfCityNameAndNumberOfYearsNeededToBuyAnApartment(city: CityEntity): Pair<String, Double> {
+        val numberOfYears: Double
+        city.apply {
+            val costOf100mApartment = realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!! * 100
+            val yearSalary = averageMonthlyNetSalaryAfterTax!! * 12
+            numberOfYears = costOf100mApartment / yearSalary.toDouble()
+        }
+
+        return city.cityName to numberOfYears
+    }
+
+    private fun excludeNullAndNegativeSalariesAndApartmentsCostsAndLowQualityData(city: CityEntity): Boolean {
+        return excludeNullSalariesOrNullApartmentsCosts(city) &&
+                excludeNegativeSalariesOrNegativeInternetCosts(city) &&
                 excludeLowQualityData(city)
     }
-    private fun excludeLowQualityData(city: CityEntity):Boolean{
+
+    private fun excludeLowQualityData(city: CityEntity): Boolean {
         return city.dataQuality
     }
+
     private fun excludeNullSalariesOrNullApartmentsCosts(city: CityEntity): Boolean {
-        return city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre != null
-                && city.averageMonthlyNetSalaryAfterTax != null
+        with(city) {
+            return realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre != null
+                    && averageMonthlyNetSalaryAfterTax != null
+        }
     }
 
     private fun excludeNegativeSalariesOrNegativeInternetCosts(city: CityEntity): Boolean {
-
-        return city.averageMonthlyNetSalaryAfterTax!! >= 0
-                && city.realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!! >= 0
+        with(city) {
+            return averageMonthlyNetSalaryAfterTax!! >= 0
+                    && realEstatesPrices.pricePerSquareMeterToBuyApartmentOutsideOfCentre!! >= 0
+        }
     }
 
 }
