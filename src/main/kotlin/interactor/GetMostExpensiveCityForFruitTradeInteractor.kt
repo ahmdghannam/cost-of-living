@@ -2,7 +2,9 @@ package interactor
 
 import model.CityEntity
 
-
+/*
+* get best trade line for chosen fruit
+* */
 class GetMostExpensiveCityForFruitTradeInteractor(
     private val dataSource: CostOfLivingDataSource,
 ) {

@@ -35,7 +35,7 @@ fun main() {
     println(getSalariesOfCountryCitiesInteractor.execute("Iraq"))
     printSeparationLine()
 
-    // 4  getHighestDifferanceBetweenCityCenterAndOutside
+    // 4 getHighestDifferanceBetweenCityCenterAndOutside
     val getHighestDifferanceBetweenCityCenterAndOutside=GetHighestDifferanceBetweenCityCenterAndOutside(dataSource)
     println(getHighestDifferanceBetweenCityCenterAndOutside.execute(TheTypeOfApartments.ONE_BED_ROOM))
     printSeparationLine()
@@ -74,7 +74,7 @@ fun main() {
 
     // new features for this week
 
-    // 1- get most expensive city for fruit trade
+    // 1
     val getMostExpensiveCityForFruitTradeInteractor = GetMostExpensiveCityForFruitTradeInteractor(dataSource)
     println(getMostExpensiveCityForFruitTradeInteractor.execute("apple"))
     printSeparationLine()
