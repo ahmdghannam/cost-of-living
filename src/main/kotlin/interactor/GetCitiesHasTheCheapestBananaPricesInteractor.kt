@@ -3,15 +3,16 @@ package interactor
 import model.CityEntity
 
 
-class GetCitiesHasTheCheapestBananaPricesInteractor ( private val dataSource: CostOfLivingDataSource ){
+class GetCitiesHasTheCheapestBananaPricesInteractor (
+    private val dataSource: CostOfLivingDataSource ){
 
 
-    fun execute(vararg cities: List<String>): List<String> {
+    fun execute(vararg cities: String): List<String> {
 
         return dataSource
                 .getAllCitiesData()
                 .filter {excludeNullAndNegativeBananaPrices(it)
-                        && cities.toList().toString().split(", ").contains(it.cityName)}
+                        && cities.any{ cityName -> it.cityName.equals(cityName, true) }}
                 .sortedBy { it.fruitAndVegetablesPrices.banana1kg }
                 .map { it.cityName }
     }
